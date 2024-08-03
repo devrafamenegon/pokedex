@@ -4,7 +4,7 @@ import { CTAButton } from '@/components/CTAButton';
 
 const { width, height } = Dimensions.get('window');
 
-export default function OnboardScreen() {
+const OnboardScreen = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -109,3 +109,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
 });
+
+export default OnboardScreen;
