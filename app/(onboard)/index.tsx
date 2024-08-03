@@ -1,12 +1,14 @@
 import React, { useRef } from 'react';
-import { Animated, ScrollView, StyleSheet, View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
-import { CTAButton } from '@/components/CTAButton';
+import { Animated, ScrollView, StyleSheet, View, Dimensions } from 'react-native';
+import { useRouter } from 'expo-router';
+import OnboardPage from '@/components/OnboardPage';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
-const OnboardScreen = () => {
+export default function OnboardScreen() {
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
+  const router = useRouter();
 
   const interpolateIndicator1 = scrollX.interpolate({
     inputRange: [0, width],
@@ -26,6 +28,10 @@ const OnboardScreen = () => {
     }
   };
 
+  const handleStart = () => {
+    router.push('/entry-selection');
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -38,23 +44,25 @@ const OnboardScreen = () => {
           { useNativeDriver: false }
         )}
         scrollEventThrottle={16}
+        style={{ paddingBottom: 100 }}
       >
-        <View style={styles.page}>
-          <Image source={require('@/assets/images/trainers/duo_1.png')} />
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>Todos os Pokémons em um só Lugar</Text>
-            <Text style={styles.subtitle}>Acesse uma vasta lista de Pokémon de todas as gerações já feitas pela Nintendo</Text>
-          </View>
-          <CTAButton title='Continuar' type='default' onPress={handleContinue} />
+        <View style={styles.pageContainer}>
+          <OnboardPage
+            imageSource={require('@/assets/images/trainers/duo_1.png')}
+            title='Todos os Pokémons em um só Lugar'
+            subtitle='Acesse uma vasta lista de Pokémon de todas as gerações já feitas pela Nintendo'
+            buttonTitle='Continuar'
+            onButtonPress={handleContinue}
+          />
         </View>
-
-        <View style={styles.page}>
-          <Image source={require('@/assets/images/trainers/3.png')} style={styles.image} />
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>Mantenha sua Pokédex atualizada</Text>
-            <Text style={styles.subtitle}>Cadastre-se e mantenha seu perfil, pokémon favoritos, configurações e muito mais, salvos no aplicativo, mesmo sem conexão com a internet.</Text>
-          </View>
-          <CTAButton title='Começar' type='default' />
+        <View style={styles.pageContainer}>
+          <OnboardPage
+            imageSource={require('@/assets/images/trainers/3.png')}
+            title='Mantenha sua Pokédex atualizada'
+            subtitle='Cadastre-se e mantenha seu perfil, pokémon favoritos, configurações e muito mais, salvos no aplicativo, mesmo sem conexão com a internet.'
+            buttonTitle='Começar'
+            onButtonPress={handleStart}
+          />
         </View>
       </ScrollView>
 
@@ -69,31 +77,11 @@ const OnboardScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF'
   },
-  page: {
-    width: width,
-    height: height,
-    justifyContent: 'flex-end',
-    paddingHorizontal: 19.5,
-    paddingBottom: 80,
-  },
-  image: {
-    alignSelf: 'center',
-  },
-  textContainer: {
-    marginBottom: 40,
-    gap: 10,
-  },
-  title: {
-    textAlign: 'center',
-    fontFamily: 'Poppins-Medium',
-    fontSize: 26,
-  },
-  subtitle: {
-    textAlign: 'center',
-    fontFamily: 'Poppins-Regular',
-    fontSize: 14,
-    lineHeight: 21,
+  pageContainer: {
+    width,
+    paddingHorizontal: 16
   },
   pageIndicatorContainer: {
     position: 'absolute',
@@ -109,5 +97,3 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
 });
-
-export default OnboardScreen;
