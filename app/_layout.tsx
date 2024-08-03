@@ -9,7 +9,7 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     "Poppins-Regular": require('../assets/fonts/Poppins-Regular.ttf'),
     "Poppins-Medium": require('../assets/fonts/Poppins-Medium.ttf'),
-
+    "Poppins-SemiBold": require('../assets/fonts/Poppins-SemiBold.ttf'),
   });
 
   useEffect(() => {
@@ -23,9 +23,12 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack initialRouteName="(onboard)" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(onboard)" />
-      <Stack.Screen name="login-cadastro" />
+      <Stack.Screen name="entry-selection" />
+      <Stack.Screen name="register" />
+      <Stack.Screen name="login" />
+      <Stack.Screen name="pokedex" />
     </Stack>
   );
 }
