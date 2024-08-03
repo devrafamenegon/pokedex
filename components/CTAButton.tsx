@@ -3,7 +3,7 @@ import { Text, StyleSheet, type ButtonProps, TouchableOpacity } from 'react-nati
 
 export type ThemedButtonProps = ButtonProps & {
   title: string,
-  type?: 'default' | 'outline' | 'deactivate';
+  type?: 'default' | 'outline' | 'ghost' | 'deactivate';
 };
 
 export function CTAButton({
@@ -17,6 +17,7 @@ export function CTAButton({
         styles.button,
         type === 'default' && styles.defaultButton,
         type === 'outline' && styles.outlineButton,
+        type === 'ghost' && styles.ghostButton,
         type === 'deactivate' && styles.deactivateButton,
       ]}
       {...rest}
@@ -26,6 +27,7 @@ export function CTAButton({
           styles.text,
           type === 'default' && styles.defaultText,
           type === 'outline' && styles.outlineText,
+          type === 'ghost' && styles.ghostText,
           type === 'deactivate' && styles.deactivateText,
         ]}
       >
@@ -38,11 +40,11 @@ export function CTAButton({
 const styles = StyleSheet.create({
   button: {
     borderRadius: 100,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 10,
   },
   text: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-SemiBold',
     fontSize: 18,
     textAlign: 'center',
   },
@@ -64,6 +66,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   outlineText: {
+    color: '#173EA5',
+  },
+  ghostButton: {
+    backgroundColor: 'transparent',
+  },
+  ghostText: {
     color: '#173EA5',
   },
 });
