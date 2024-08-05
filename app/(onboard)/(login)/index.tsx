@@ -1,27 +1,26 @@
 import { CTAButton } from "@/components/CTAButton";
+import { CTAIconButton } from "@/components/CTAIconButton";
+import BackArrowIcon from "@/components/icon/back-arrow";
 import { useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native"
-import BackArrowIcon from "@/components/icon/back-arrow";
-import { CTAIconButton } from "@/components/CTAIconButton";
 
-const RegisterScreen = () => {
+const LoginScreen = () => {
   const router = useRouter();
 
   const handleBack = () => {
-    console.log('Back button pressed');
     router.push('/entry-selection');
   };
 
-  const handleRegisterWithApple = () => {
-    router.push('/register-with-apple');
+  const handleLoginWithApple = () => {
+    router.push('/login-with-apple');
   };
 
-  const handleRegisterWithGoogle = () => {
-    router.push('/register-with-google');
+  const handleLoginWithGoogle = () => {
+    router.push('/login-with-google');
   };
 
-  const handleRegisterWithEmail = () => {
-    router.push('/register-with-email');
+  const handleLoginWithEmail = () => {
+    router.push('/login-with-email');
   };
 
   return (
@@ -33,21 +32,15 @@ const RegisterScreen = () => {
         <Text style={styles.header}>Criar conta</Text>
       </View>
       <View style={styles.contentContainer}>
-        <Image source={require('@/assets/images/trainers/6.png')} style={styles.image} />
+        <Image source={require('@/assets/images/trainers/7.png')} style={styles.image} />
         <View style={styles.textContainer}>
-          <Text style={styles.title}>Falta pouco para explorar esse mundo!</Text>
+          <Text style={styles.title}>Que bom te ver aqui novamente!</Text>
           <Text style={styles.subtitle}>Como deseja se conectar?</Text>
         </View>
         <View style={styles.buttonContainer}>
-          <View>
-            <CTAIconButton title="Continuar com a Apple" logo='logo-apple' onPress={handleRegisterWithApple}/>
-          </View>
-          <View>
-            <CTAIconButton title="Continuar com o Google" logo='logo-google' onPress={handleRegisterWithGoogle}/>
-          </View>
-          <View>
-            <CTAButton title="Continuar com um e-mail" type="default" onPress={handleRegisterWithEmail}/>
-          </View>
+          <CTAIconButton title="Continuar com a Apple" logo='logo-apple' onPress={handleLoginWithApple}/>
+          <CTAIconButton title="Continuar com o Google" logo='logo-google' onPress={handleLoginWithGoogle}/>
+          <CTAButton title="Continuar com um e-mail" type='default' onPress={handleLoginWithEmail}/>
         </View>
       </View>
     </View>
@@ -114,4 +107,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RegisterScreen;
+export default LoginScreen;
