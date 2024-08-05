@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, StyleSheet, type ButtonProps, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, type ButtonProps, Pressable } from 'react-native';
 
-export type ThemedButtonProps = ButtonProps & {
+export type CTAButtonProps = ButtonProps & {
   title: string,
   type?: 'default' | 'outline' | 'ghost' | 'deactivate';
 };
@@ -10,9 +10,9 @@ export function CTAButton({
   title,
   type = 'default',
   ...rest
-}: ThemedButtonProps) {
+}: CTAButtonProps) {
   return (
-    <TouchableOpacity
+    <Pressable
       style={[
         styles.button,
         type === 'default' && styles.defaultButton,
@@ -33,7 +33,7 @@ export function CTAButton({
       >
         {title}
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 

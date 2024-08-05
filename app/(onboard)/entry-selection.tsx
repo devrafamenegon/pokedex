@@ -2,7 +2,7 @@ import { CTAButton } from "@/components/CTAButton";
 import ArrowIcon from "@/components/icon/arrow";
 import OnboardPage from "@/components/OnboardPage";
 import { useRouter } from "expo-router";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Pressable, StyleSheet, Text, View } from "react-native"
 
 const EntrySelectionScreen = () => {
   const router = useRouter();
@@ -22,10 +22,10 @@ const EntrySelectionScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.skipContainer}>
-        <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
+        <Pressable onPress={handleSkip} style={styles.skipButton}>
           <Text style={styles.skip}>Pular </Text>
           <ArrowIcon />
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <OnboardPage
         imageSource={require('@/assets/images/trainers/duo_2.png')}
