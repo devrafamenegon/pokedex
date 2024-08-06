@@ -1,36 +1,26 @@
 import { CTAButton } from "@/components/CTAButton";
 import { useRouter } from "expo-router";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native"
-import BackArrowIcon from "@/components/icon/back-arrow";
+import { Image, StyleSheet, Text, View } from "react-native"
 import { CTAIconButton } from "@/components/CTAIconButton";
+import HeaderView from "@/components/HeaderView";
 
 const RegisterScreen = () => {
   const router = useRouter();
 
-  const handleBack = () => {
-    router.push('/entry-selection');
-  };
-
   const handleRegisterWithApple = () => {
-    router.push('/register-with-apple');
+    // TODO
   };
 
   const handleRegisterWithGoogle = () => {
-    router.push('/register-with-google');
+    // TODO
   };
 
   const handleRegisterWithEmail = () => {
-    router.push('/register-with-email');
+    router.push('/(onboard)/(register)/register-with-email' as any);
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Pressable style={styles.backArrow} onPress={handleBack}>
-          <BackArrowIcon />
-        </Pressable>
-        <Text style={styles.header}>Criar conta</Text>
-      </View>
+    <HeaderView>
       <View style={styles.contentContainer}>
         <Image source={require('@/assets/images/trainers/6.png')} style={styles.image} />
         <View style={styles.textContainer}>
@@ -43,39 +33,11 @@ const RegisterScreen = () => {
           <CTAButton title="Continuar com um e-mail" type='default' onPress={handleRegisterWithEmail}/>
         </View>
       </View>
-    </View>
+    </HeaderView>
   )
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    display: 'flex',
-    paddingVertical: 40,
-    paddingHorizontal: 16,
-    backgroundColor: '#FFF'
-  },
-  headerContainer: {
-    height: 38,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  backArrow: {
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    padding: 32,
-    margin: -32,
-    zIndex: 1
-  },
-  header: {
-    flex: 1,
-    textAlign: 'center',
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 18,
-  },
   contentContainer: {
     flex: 1,
     justifyContent: 'flex-end',   
