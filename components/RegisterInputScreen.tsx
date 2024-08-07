@@ -36,7 +36,7 @@ const RegisterInputScreen: React.FC<RegisterInputScreenProps> = ({
   };
 
   return (
-    <HeaderView>
+    <HeaderView headerTitle='Criar conta'>
       <View style={styles.contentContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.firstText}>{title}</Text>

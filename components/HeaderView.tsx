@@ -3,10 +3,14 @@ import { Pressable, StyleSheet, Text, View } from "react-native"
 import BackArrowIcon from "@/components/icon/back-arrow";
 
 interface HeaderProps {
-  children: any;
+  headerTitle: string,
+  children: any
 }
 
-const HeaderView: React.FC<HeaderProps> = ({ children }) => {
+const HeaderView: React.FC<HeaderProps> = ({ 
+  headerTitle, 
+  children 
+}) => {
   const router = useRouter();
 
   const handleBack = () => {
@@ -19,7 +23,7 @@ const HeaderView: React.FC<HeaderProps> = ({ children }) => {
         <Pressable style={styles.backArrow} onPress={handleBack}>
           <BackArrowIcon />
         </Pressable>
-        <Text style={styles.header}>Criar conta</Text>
+        <Text style={styles.header}>{headerTitle}</Text>
       </View>
       <View style={styles.contentContainer}>
         {children}
