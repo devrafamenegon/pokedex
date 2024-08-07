@@ -12,15 +12,15 @@ const LoginScreen = () => {
   };
 
   const handleLoginWithApple = () => {
-    router.push('/login-with-apple');
+    // TODO
   };
 
   const handleLoginWithGoogle = () => {
-    router.push('/login-with-google');
+    // TODO
   };
 
   const handleLoginWithEmail = () => {
-    router.push('/login-with-email');
+    router.push('/(onboard)/(login)/login-with-email' as any);
   };
 
   return (
