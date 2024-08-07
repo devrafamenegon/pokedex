@@ -20,7 +20,7 @@ const RegisterScreen = () => {
   };
 
   return (
-    <HeaderView>
+    <HeaderView headerTitle='Criar conta'>
       <View style={styles.contentContainer}>
         <Image source={require('@/assets/images/trainers/6.png')} style={styles.image} />
         <View style={styles.textContainer}>
