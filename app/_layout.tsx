@@ -26,6 +26,7 @@ export default function RootLayout() {
     <Stack initialRouteName="(onboard)" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(onboard)" />
       <Stack.Screen name="(pokedex)" />
+      <Stack.Screen name="(change-password)" />
     </Stack>
   );
 }
