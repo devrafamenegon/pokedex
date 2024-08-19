@@ -29,7 +29,7 @@ const LoginScreen = () => {
         <Pressable style={styles.backArrow} onPress={handleBack}>
           <BackArrowIcon />
         </Pressable>
-        <Text style={styles.header}>Criar conta</Text>
+        <Text style={styles.header}>Entrar</Text>
       </View>
       <View style={styles.contentContainer}>
         <Image source={require('@/assets/images/trainers/7.png')} style={styles.image} />
