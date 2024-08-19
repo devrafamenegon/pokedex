@@ -51,7 +51,7 @@ const LoginWithEmailScreen = () => {
             />
           </View>
         </View>
-        <View style={styles.forgotContainer}>
+        <View>
           <Pressable onPress={handleForgot}>
             <Text style={styles.forgotText}>Esqueceu sua senha?</Text>
           </Pressable>
@@ -105,9 +105,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
     fontSize: 14,
     color: '#000',
-  },
-  forgotContainer: {
-    
   },
   forgotText: {
     fontFamily: 'Poppins-Medium',
