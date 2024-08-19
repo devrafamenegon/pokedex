@@ -1,5 +1,5 @@
 import React from 'react';
-import RegisterInputScreen from '@/components/RegisterInputScreen';
+import InputScreen from '@/components/InputScreen';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
 const RegisterWithPasswordScreen = () => {
@@ -14,7 +14,8 @@ const RegisterWithPasswordScreen = () => {
   };
 
   return (
-    <RegisterInputScreen
+    <InputScreen
+      headerTitle='Criar conta'
       title="Agora..."
       subtitle="Crie uma senha"
       placeholder="Senha"

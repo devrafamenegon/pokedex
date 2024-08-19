@@ -4,7 +4,8 @@ import HeaderView from "@/components/HeaderView";
 import CustomTextInput from "@/components/CustomTextInput";
 import { CTAButton } from "@/components/CTAButton";
 
-interface RegisterInputScreenProps {
+interface InputScreenProps {
+  headerTitle: string;
   title: string;
   subtitle: string;
   placeholder: string;
@@ -15,7 +16,8 @@ interface RegisterInputScreenProps {
   validate?: (value: string) => boolean;
 }
 
-const RegisterInputScreen: React.FC<RegisterInputScreenProps> = ({
+const InputScreen: React.FC<InputScreenProps> = ({
+  headerTitle,
   title,
   subtitle,
   placeholder,
@@ -36,7 +38,7 @@ const RegisterInputScreen: React.FC<RegisterInputScreenProps> = ({
   };
 
   return (
-    <HeaderView headerTitle='Criar conta'>
+    <HeaderView headerTitle={headerTitle}>
       <View style={styles.contentContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.firstText}>{title}</Text>
@@ -100,4 +102,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RegisterInputScreen;
+export default InputScreen;

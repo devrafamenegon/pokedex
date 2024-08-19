@@ -1,5 +1,5 @@
 import React from 'react';
-import RegisterInputScreen from '@/components/RegisterInputScreen';
+import InputScreen from '@/components/InputScreen';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
 const RegisterWithNameScreen = () => {
@@ -14,7 +14,8 @@ const RegisterWithNameScreen = () => {
   };
 
   return (
-    <RegisterInputScreen
+    <InputScreen
+      headerTitle='Criar conta'
       title="Pra finalizar"
       subtitle="Qual é o seu nome?"
       placeholder="Nome"

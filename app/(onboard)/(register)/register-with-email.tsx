@@ -1,5 +1,5 @@
 import React from 'react';
-import RegisterInputScreen from '@/components/RegisterInputScreen';
+import InputScreen from '@/components/InputScreen';
 import { useRouter } from 'expo-router';
 
 const RegisterWithEmailScreen = () => {
@@ -13,7 +13,8 @@ const RegisterWithEmailScreen = () => {
   };
 
   return (
-    <RegisterInputScreen
+    <InputScreen
+      headerTitle='Criar conta'
       title="Vamos começar!"
       subtitle="Qual é o seu e-mail?"
       placeholder="E-mail"
