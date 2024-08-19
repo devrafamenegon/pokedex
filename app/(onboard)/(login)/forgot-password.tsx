@@ -1,5 +1,5 @@
 import React from 'react';
-import RegisterInputScreen from '@/components/RegisterInputScreen';
+import InputScreen from '@/components/InputScreen';
 import { useRouter } from 'expo-router';
 
 const ForgotPasswordScreen = () => {
@@ -13,7 +13,8 @@ const ForgotPasswordScreen = () => {
   };
 
   return (
-    <RegisterInputScreen
+    <InputScreen
+      headerTitle='Esqueci minha senha'
       title="Vamos recuperar!"
       subtitle="Qual é o seu e-mail?"
       placeholder="E-mail"
