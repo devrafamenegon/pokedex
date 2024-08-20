@@ -4,19 +4,19 @@ import OnboardPage from "@/components/OnboardPage";
 import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native"
 
-const EntrySelectionScreen = () => {
+const AuthScreen = () => {
   const router = useRouter();
 
   const handleRegister = () => {
-    router.push('/register');
+    router.push('/(register)');
   };
 
   const handleLogin = () => {
-    router.push('/login');
+    router.push('/(login)');
   };
 
   const handleSkip = () => {
-    router.push('/pokedex');
+    router.push('/(home)');
   };
 
   return (
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default EntrySelectionScreen;
+export default AuthScreen;

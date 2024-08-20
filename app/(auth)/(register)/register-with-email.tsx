@@ -2,28 +2,28 @@ import React from 'react';
 import InputScreen from '@/components/InputScreen';
 import { useRouter } from 'expo-router';
 
-const ForgotPasswordScreen = () => {
+const RegisterWithEmailScreen = () => {
   const router = useRouter();
 
   const handleEmailSubmit = (email: string) => {
     router.push({
-      pathname: '/(onboard)/(login)/forgot-password-code' as any,
+      pathname: '/register-with-password',
       params: { email },
     });
   };
 
   return (
     <InputScreen
-      headerTitle='Esqueci minha senha'
-      title="Vamos recuperar!"
+      headerTitle='Criar conta'
+      title="Vamos começar!"
       subtitle="Qual é o seu e-mail?"
       placeholder="E-mail"
       buttonText='Continuar'
-      tipText="Vamos enviar um código de verificação para o seu e-mail."
+      tipText="Use um endereço de e-mail válido."
       onSubmit={handleEmailSubmit}
       validate={(value) => value.includes('@')}
     />
   );
 };
 
-export default ForgotPasswordScreen;
+export default RegisterWithEmailScreen;

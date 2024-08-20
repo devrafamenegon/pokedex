@@ -1,9 +1,9 @@
 import { Text } from "react-native";
 
-const PokedexScreen = () => {
+const HomeScreen = () => {
   return (
     <Text>Pokedex</Text>
   )
 }
 
-export default PokedexScreen;
+export default HomeScreen;

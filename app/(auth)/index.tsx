@@ -5,7 +5,7 @@ import OnboardPage from '@/components/OnboardPage';
 
 const { width } = Dimensions.get('window');
 
-export default function OnboardScreen() {
+export default function AuthScreen() {
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
   const router = useRouter();

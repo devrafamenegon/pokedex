@@ -7,7 +7,7 @@ const LoginLoadScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push('/(onboard)/(login)/login-success' as any)
+      router.push('/login-success')
     }, 2000); // TODO
 
     return () => clearTimeout(timer);

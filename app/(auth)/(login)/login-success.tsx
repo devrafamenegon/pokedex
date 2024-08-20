@@ -1,23 +1,21 @@
 import { CTAButton } from "@/components/CTAButton";
-import CheckIcon from "@/components/icon/check";
 import { useRouter } from "expo-router";
 import { Image, StyleSheet, Text, View } from "react-native";
 
-const RegisterSuccess = () => {
+const LoginSuccessScreen = () => {
   const router = useRouter();
 
   const handleContinue = () => {
-    router.push('/(pokedex)/pokedex' as any)
+    router.push('/(home)')
   }
 
   return (
     <View style={styles.screen}>
-      <CheckIcon />
       <View style={styles.container}>
-        <Image source={require('@/assets/images/trainers/duo_3.png')} style={styles.image} />
+        <Image source={require('@/assets/images/trainers/duo_4.png')} style={styles.image} />
         <View style={styles.textContainer}>
-          <Text style={styles.title}>Sua conta foi criada com Sucesso!</Text>
-          <Text style={styles.subtitle}>Seja bem-vindo, treinador! Estamos animados para acompanhar sua jornada.</Text>
+          <Text style={styles.title}>Bem-vindo de volta, Treinador!</Text>
+          <Text style={styles.subtitle}>Esperamos que tenha tido uma longa jornada desde a última vez em que nos visitou.</Text>
         </View>
         <CTAButton title="Continuar" onPress={handleContinue}/>
       </View>
@@ -58,8 +56,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     color: '#666666',
-    paddingHorizontal: 8
   },
 })
 
-export default RegisterSuccess;
+export default LoginSuccessScreen;

@@ -8,7 +8,7 @@ const RegisterWithPasswordScreen = () => {
 
   const handlePasswordSubmit = (password: string) => {
     router.push({
-      pathname: '/(onboard)/(register)/register-with-name' as any,
+      pathname: '/register-with-name',
       params: { email, password },
     });
   };

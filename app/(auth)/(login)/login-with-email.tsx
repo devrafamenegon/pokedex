@@ -15,11 +15,11 @@ const LoginWithEmailScreen = () => {
     // Processar o login com o email e senha
     console.log(`Logging user: ${email}, ${password}`);
     // Navegar para a próxima etapa ou tela de conclusão
-    router.push('/(onboard)/(login)/login-load' as any)
+    router.push('/login-load')
   };
 
   const handleForgot = () => {
-    router.push('/(onboard)/(login)/forgot-password' as any)
+    router.push('/forgot-password')
   }
 
   const isValid = () => email.includes('@') && password.length >= 8;

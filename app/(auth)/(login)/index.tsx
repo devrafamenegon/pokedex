@@ -20,7 +20,7 @@ const LoginScreen = () => {
   };
 
   const handleLoginWithEmail = () => {
-    router.push('/(onboard)/(login)/login-with-email' as any);
+    router.push('/login-with-email');
   };
 
   return (

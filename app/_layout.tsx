@@ -1,6 +1,7 @@
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { Slot, SplashScreen } from "expo-router";
 import { useEffect } from "react";
+import { ClerkProvider, ClerkLoaded } from '@clerk/clerk-expo';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -11,6 +12,14 @@ export default function RootLayout() {
     "Poppins-Medium": require('../assets/fonts/Poppins-Medium.ttf'),
     "Poppins-SemiBold": require('../assets/fonts/Poppins-SemiBold.ttf'),
   });
+
+  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
+
+  if (!publishableKey) {
+    throw new Error(
+      'Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env',
+    )
+  }
 
   useEffect(() => {
     if (loaded) {
@@ -23,10 +32,10 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack initialRouteName="(onboard)" screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(onboard)" />
-      <Stack.Screen name="(pokedex)" />
-      <Stack.Screen name="(change-password)" />
-    </Stack>
-  );
+    <ClerkProvider publishableKey={publishableKey}>
+      <ClerkLoaded>
+        <Slot />
+      </ClerkLoaded>
+    </ClerkProvider>
+  );  
 }

@@ -7,7 +7,7 @@ const RegisterLoad = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push('/(onboard)/(register)/register-success' as any)
+      router.push('/register-success')
     }, 2000); // TODO
 
     return () => clearTimeout(timer);

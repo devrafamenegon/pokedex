@@ -10,7 +10,7 @@ const RegisterWithNameScreen = () => {
     // Processar o registro com o nome, email e senha
     console.log(`Registering user: ${name}, ${email}, ${password}`);
     // Navegar para a próxima etapa ou tela de conclusão
-    router.push('/(onboard)/(register)/register-load' as any)
+    router.push('/register-load')
   };
 
   return (
