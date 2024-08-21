@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { InputModeOptions, StyleSheet, Text, View } from 'react-native';
 import HeaderView from "@/components/HeaderView";
 import CustomTextInput from "@/components/CustomTextInput";
 import { CTAButton } from "@/components/CTAButton";
@@ -10,10 +10,13 @@ interface InputScreenProps {
   subtitle: string;
   placeholder: string;
   buttonText: string;
+  onSubmit: (value: string) => void;
   tipText?: string;
   secureTextEntry?: boolean;
-  onSubmit: (value: string) => void;
-  validate?: (value: string) => boolean;
+  autoCapitalize?: 'none' | 'words' | 'sentences' | 'characters',
+  inputMode?: InputModeOptions,
+  validate?: (value: string) => boolean,
+  isLoading?: boolean
 }
 
 const InputScreen: React.FC<InputScreenProps> = ({
@@ -23,9 +26,12 @@ const InputScreen: React.FC<InputScreenProps> = ({
   placeholder,
   tipText,
   buttonText,
-  secureTextEntry = false,
   onSubmit,
+  secureTextEntry = false,
   validate = () => true,
+  autoCapitalize = 'none',
+  inputMode = 'text',
+  isLoading = false
 }) => {
   const [value, setValue] = useState('');
 
@@ -49,6 +55,8 @@ const InputScreen: React.FC<InputScreenProps> = ({
           value={value} 
           onChangeText={setValue}
           secureTextEntry={secureTextEntry}
+          autoCapitalize={autoCapitalize}
+          inputMode={inputMode}
         />
         {tipText && (
           <Text style={styles.tipText}>{tipText}</Text>
@@ -58,6 +66,7 @@ const InputScreen: React.FC<InputScreenProps> = ({
             title={buttonText}
             type={!isValid ? 'deactivate' : 'default'}
             onPress={handleContinue}
+            disabled={isLoading}
           />
         </View>
       </View>
