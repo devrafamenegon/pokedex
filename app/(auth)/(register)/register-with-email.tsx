@@ -22,6 +22,8 @@ const RegisterWithEmailScreen = () => {
       tipText="Use um endereço de e-mail válido."
       onSubmit={handleEmailSubmit}
       validate={(value) => value.includes('@')}
+      autoCapitalize='none'
+      inputMode='email'
     />
   );
 };
