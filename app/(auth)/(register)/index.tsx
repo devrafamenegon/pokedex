@@ -16,7 +16,7 @@ const RegisterScreen = () => {
   };
 
   const handleRegisterWithEmail = () => {
-    router.push('/register-with-password');
+    router.push('/register-with-email');
   };
 
   return (
