@@ -1,16 +1,18 @@
 import React from 'react';
 import InputScreen from '@/components/InputScreen';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { saveCredentials } from '@/utils/secureStore';
 
 const RegisterWithPasswordScreen = () => {
   const router = useRouter();
   const { email } = useLocalSearchParams();
 
-  const handlePasswordSubmit = (password: string) => {
-    router.push({
-      pathname: '/register-with-name',
-      params: { email, password },
-    });
+  const handlePasswordSubmit = async (password: string) => {
+    const emailString = Array.isArray(email) ? email[0] : email;
+
+    await saveCredentials(emailString, password);
+    
+    router.push('/register-with-name');
   };
 
   return (
@@ -24,6 +26,8 @@ const RegisterWithPasswordScreen = () => {
       secureTextEntry
       onSubmit={handlePasswordSubmit}
       validate={(value) => value.length >= 8}
+      autoCapitalize='none'
+      inputMode='text'
     />
   );
 };
