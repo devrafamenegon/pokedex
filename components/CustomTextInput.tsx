@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { StyleSheet, TextInput } from "react-native";
+import { InputModeOptions, StyleSheet, TextInput } from "react-native";
 
 interface CustomTextInputProps {
   placeholder: string,
   value: string,
   onChangeText: (text: string) => void,
-  secureTextEntry: boolean
+  secureTextEntry: boolean,
+  autoCapitalize?: 'none' | 'words' | 'sentences' | 'characters',
+  inputMode?: InputModeOptions,
 }
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -13,6 +15,8 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   value = '',
   onChangeText,
   secureTextEntry,
+  autoCapitalize = 'none',
+  inputMode = 'text',
   ...rest
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -31,6 +35,8 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       secureTextEntry={secureTextEntry}
+      autoCapitalize={autoCapitalize}
+      inputMode={inputMode}
       {...rest}
     />
   )

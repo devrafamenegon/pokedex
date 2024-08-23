@@ -60,6 +60,7 @@ export function OTPInput({
       {codes.map((code, index) => (
         <TextInput
           key={index}
+          cursorColor='#000'
           autoComplete="one-time-code"
           enterKeyHint="next"
           style={[

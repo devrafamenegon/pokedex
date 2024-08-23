@@ -5,7 +5,7 @@ const ChangePasswordSecondStepScreen = () => {
   const router = useRouter();
 
   const handlePasswordSubmit = () => {
-    router.push('/(onboard)/(login)/login-with-email' as any)
+    router.push('/(auth)/login-with-email' as any)
   };
 
   return (

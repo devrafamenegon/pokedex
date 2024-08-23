@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-export default function ChangePasswordLayout() {
+export default function LoginLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }} />
   );
