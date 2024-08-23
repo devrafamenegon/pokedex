@@ -4,23 +4,50 @@ import HeaderView from '@/components/HeaderView';
 import { CTAButton } from '@/components/CTAButton';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import CustomTextInput from '@/components/CustomTextInput';
+import { useSignIn } from '@clerk/clerk-expo';
 
 const LoginWithEmailScreen = () => {
+  const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(''); // Novo estado para mensagem de erro
 
-  const handleSubmit = (email: string, password: string) => {
-    // Processar o login com o email e senha
-    console.log(`Logging user: ${email}, ${password}`);
-    // Navegar para a próxima etapa ou tela de conclusão
-    router.push('/login-load')
+  const handleSubmit = async (email: string, password: string) => {
+    if (!isLoaded) {
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage('');
+
+    try {
+      const completeSignIn = await signIn.create({
+        identifier: email,
+        password,
+      });
+
+      await setActive({ session: completeSignIn.createdSessionId });
+
+      router.push('/login-load');
+    } catch (err: any) {
+      const error = err?.errors?.[0];
+      if (error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage('Algo deu errado. Tente novamente.');
+      }
+      console.error(JSON.stringify(err, null, 2));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleForgot = () => {
-    router.push('/forgot-password')
-  }
+    router.push('/forgot-password');
+  };
 
   const isValid = () => email.includes('@') && password.length >= 8;
 
@@ -51,6 +78,9 @@ const LoginWithEmailScreen = () => {
             />
           </View>
         </View>
+        {errorMessage ? (
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        ) : null}
         <View>
           <Pressable onPress={handleForgot}>
             <Text style={styles.forgotText}>Esqueceu sua senha?</Text>
@@ -61,10 +91,10 @@ const LoginWithEmailScreen = () => {
             title='Entrar'
             type={isValid() ? 'default' : 'deactivate'}
             onPress={() => handleSubmit(email, password)}
+            disabled={isLoading}
           />
         </View>
       </View>
-      
     </HeaderView>
   );
 };
@@ -116,6 +146,13 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     justifyContent: 'flex-end'
+  },
+  errorText: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 14,
+    color: '#FF0000',
+    textAlign: 'center',
+    marginTop: 16,
   }
 });
 
