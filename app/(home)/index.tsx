@@ -14,19 +14,29 @@ const HomeScreen = () => {
   const [page, setPage] = useState(0);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [selectedType, setSelectedType] = useState("Todos os tipos");
+  const [selectedOrder, setSelectedOrder] = useState("Menor número");
 
-  const sheetRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["30%", "60%"], []);
+  const typeSheetRef = useRef<BottomSheetModal>(null);
+  const orderSheetRef = useRef<BottomSheetModal>(null);
+
+  const typeSnapPoints = useMemo(() => ["30%", "60%"], []);
+  const orderSnapPoints = useMemo(() => ["40%"], []);
 
   const sortedTypes = useMemo(() => types.sort(), []);
 
-  const handlePresentPress = () => sheetRef.current?.expand();
+  const handleTypeFilterPress = () => typeSheetRef.current?.expand();
+  const handleOrderFilterPress = () => orderSheetRef.current?.expand();
 
   const handleTypeSelection = (type: string) => {
     setSelectedType(type);
     setPage(0);
     setPokemonList([]);
-    sheetRef.current?.close();
+    typeSheetRef.current?.close();
+  };
+
+  const handleOrderSelection = (order: string) => {
+    setSelectedOrder(order);
+    typeSheetRef.current?.close();
   };
 
   const fetchPokemons = async (page: number, selectedType: string) => {
@@ -112,6 +122,23 @@ const HomeScreen = () => {
     []
   );
 
+  const renderOrderButton = useCallback(
+    ({ item }: { item: string }) => {
+      return (
+        <Pressable
+          style={styles.orderButton}
+          onPress={() => handleOrderSelection(item)}
+        >
+          <Text style={styles.orderButtonText}>{capitalizeFirstLetter(item)}</Text>
+        </Pressable>
+      );
+    },
+    []
+  );
+
+  const backgroundColor = selectedType === "Todos os tipos" ? '#333' : getTypeColor(selectedType as PokemonType);
+  const textColor = getTextColor(backgroundColor);
+
   return (
     <GestureHandlerRootView>
       <SafeAreaView style={styles.container}>
@@ -124,16 +151,16 @@ const HomeScreen = () => {
         </View>
 
         <View style={styles.filterContainer}>
-          <Pressable style={[styles.filterButton, { backgroundColor: selectedType === "Todos os tipos" ? '#333' : getTypeColor(selectedType as PokemonType) }]} onPress={handlePresentPress}>
-            <Text style={styles.filterButtonText}>
-              {capitalizeFirstLetter(selectedType)}
-            </Text>
-            <Ionicons name="chevron-down" size={16} style={styles.icon} color='#fff'/>
+          <Pressable style={[styles.filterButton, { backgroundColor }]} onPress={handleTypeFilterPress}>
+              <Text style={[styles.filterButtonText, { color: textColor }]}>
+                {capitalizeFirstLetter(selectedType)}
+              </Text>
+            <Ionicons name="chevron-down" size={16} style={styles.icon} color={textColor}/>
           </Pressable>
 
-          <Pressable style={styles.filterButton}>
+          <Pressable style={styles.filterButton} onPress={handleOrderFilterPress}>
             <Text style={styles.filterButtonText}>
-              Menor número
+              {capitalizeFirstLetter(selectedOrder)}
             </Text>
             <Ionicons name="chevron-down" size={16} style={styles.icon} color='#fff'/>
           </Pressable>
@@ -155,8 +182,8 @@ const HomeScreen = () => {
         </View>
 
         <BottomSheet
-          ref={sheetRef}
-          snapPoints={snapPoints}
+          ref={typeSheetRef}
+          snapPoints={typeSnapPoints}
           index={-1}
           enablePanDownToClose
         >
@@ -165,6 +192,21 @@ const HomeScreen = () => {
             data={["Todos os tipos", ...sortedTypes]}
             keyExtractor={(item, index) => `${item}-${index}`}
             renderItem={renderTypeButton}
+            contentContainerStyle={styles.contentContainerBottomSheet}
+          />
+        </BottomSheet>
+
+        <BottomSheet
+          ref={orderSheetRef}
+          snapPoints={orderSnapPoints}
+          index={-1}
+          enablePanDownToClose
+        >
+          <Text style={styles.bottomSheetTitle}>Selecione a ordem</Text>
+          <BottomSheetFlatList
+            data={["Menor número", "Maior número", "A-Z", "Z-A"]}
+            keyExtractor={(item) => item}
+            renderItem={renderOrderButton}
             contentContainerStyle={styles.contentContainerBottomSheet}
           />
         </BottomSheet>
@@ -193,27 +235,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 32,
+    gap: 16
   },
   filterButton: {
-    paddingHorizontal: 16,
+    flex: 1,
     paddingVertical: 10,
     backgroundColor: '#333',
     borderRadius: 54,
     alignItems: 'center',
     flexDirection: 'row',
+    justifyContent: 'center'
   },
   filterButtonText: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 14,
     color: '#fff',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   listContainer: {
     marginTop: 20,
     flex: 1,
   },
   icon: {
-    marginLeft: 4,
+    position: 'absolute',
+    right: 16
   },
   typeButton: {
     paddingVertical: 10,
@@ -223,6 +268,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   typeButtonText: {
+    color: '#fff',
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 14,
+  },
+  orderButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginVertical: 5,
+    alignItems: 'center',
+    backgroundColor: '#333'
+  },
+  orderButtonText: {
     color: '#fff',
     fontFamily: 'Poppins-SemiBold',
     fontSize: 14,
