@@ -78,7 +78,6 @@ const HomeScreen = () => {
               id: details.id,
               name: details.name,
               types: details.types.map((typeInfo: any) => typeInfo.type.name),
-              img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${details.id}.png`,
             };
           } catch (error) {
             console.error(`Error fetching details for ${pokemon.name}:`, error);

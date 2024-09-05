@@ -12,7 +12,7 @@ interface PokemonCardProps {
 const PokemonCard: React.FC<PokemonCardProps> = ({
   pokemon
 }) => {
-  const { id, name, types, img } = pokemon;
+  const { id, name, types } = pokemon;
   const IconComponent = getTypeGradientIcon(types[0]);
 
   return (
@@ -39,7 +39,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
       </View>
       <View style={[styles.imageContainer, { backgroundColor: getTypeColor(types[0]) }]}>
         <IconComponent style={styles.imageBackgroundIcon}/>
-        <Image source={{ uri: img }} style={styles.image} />
+        <Image source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif` }} style={styles.image} />
       </View>
     </View>
   );
