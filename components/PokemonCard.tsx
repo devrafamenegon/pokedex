@@ -1,5 +1,5 @@
 import { Pokemon } from "@/types/pokemon";
-import { getTypeColor } from "@/utils/types/colors";
+import { getTextColor, getTypeColor } from "@/utils/types/colors";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import PokemonTypeIcon from "./PokemonTypeIcon";
@@ -12,29 +12,34 @@ interface PokemonCardProps {
 const PokemonCard: React.FC<PokemonCardProps> = ({
   pokemon
 }) => {
-  const { id, name, types, img } = pokemon;
+  const { id, name, types } = pokemon;
   const IconComponent = getTypeGradientIcon(types[0]);
 
   return (
     <View style={[styles.container, { backgroundColor: `${getTypeColor(types[0])}15` }]}>
       <View style={styles.infoContainer}>
-        <Text style={styles.number}>#{id}</Text>
+        <Text style={styles.number}>Nº{(id/1000).toFixed(3).split('.').join("")}</Text>
         <Text style={styles.name}>{name}</Text>
         <View style={styles.elementContainer}>
-          {types.map((type, index) => (
-            <View
-              key={index}
-              style={[styles.elementBadge, { backgroundColor: getTypeColor(type) }]}
-            >
-              <PokemonTypeIcon type={type}/>
-              <Text style={styles.elementText} >{type}</Text>
-            </View>
-          ))}
+          {types.map((type, index) => {
+            const backgroundColor = getTypeColor(type);
+            const textColor = getTextColor(backgroundColor);
+
+            return (
+              <View
+                key={index}
+                style={[styles.elementBadge, { backgroundColor }]}
+              >
+                <PokemonTypeIcon type={type}/>
+                <Text style={[styles.elementText, { color: textColor }]}>{type}</Text>
+              </View>
+            )
+          })}
         </View>
       </View>
       <View style={[styles.imageContainer, { backgroundColor: getTypeColor(types[0]) }]}>
         <IconComponent style={styles.imageBackgroundIcon}/>
-        <Image source={{ uri: img }} style={styles.image} />
+        <Image source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif` }} style={styles.image} />
       </View>
     </View>
   );
@@ -55,8 +60,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12
   },
   number: {
+    fontFamily: 'Poppins-SemiBold',
     fontSize: 14,
-    color: '#888',
+    color: '#333',
     marginBottom: 4,
   },
   name: {
@@ -82,7 +88,6 @@ const styles = StyleSheet.create({
   elementText: {
     fontFamily: 'Poppins-Regular',
     fontSize: 11,
-    color: '#000',
     marginLeft: 4,
     textTransform: 'capitalize',
     lineHeight: 15
