@@ -1,54 +1,77 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TextInput, View, FlatList, Pressable, ActivityIndicator } from "react-native";
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  FlatList,
+  Pressable,
+} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import PokemonCard from '@/components/PokemonCard';
+import PokemonCardSkeleton from '@/components/PokemonCardSkeleton';
 import { Pokemon, PokemonType } from '@/types/pokemon';
-import BottomSheet, { BottomSheetFlatList, BottomSheetModal } from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetFlatList, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { getTextColor, getTypeColor, types } from '@/utils/types/colors';
 import { capitalizeFirstLetter } from '@/utils/string';
+import { Order } from '@/enums/order';
 
 const HomeScreen = () => {
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
-  const [selectedType, setSelectedType] = useState("Todos os tipos");
-  const [selectedOrder, setSelectedOrder] = useState("Menor número");
+  // Estados para armazenar dados e controlar a interface
+  const [allPokemonList, setAllPokemonList] = useState<Pokemon[]>([]);
+  const [filteredPokemonList, setFilteredPokemonList] = useState<Pokemon[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedType, setSelectedType] = useState<string>('Todos os tipos');
+  const [selectedOrder, setSelectedOrder] = useState<string>('Menor número');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
+  // Referências para os BottomSheets
   const typeSheetRef = useRef<BottomSheetModal>(null);
   const orderSheetRef = useRef<BottomSheetModal>(null);
 
+  // Pontos de snap dos BottomSheets
   const typeSnapPoints = useMemo(() => ["30%", "60%"], []);
   const orderSnapPoints = useMemo(() => ["40%"], []);
 
+  // Lista de tipos ordenados alfabeticamente
   const sortedTypes = useMemo(() => types.sort(), []);
 
+  // Funções de manipulação dos filtros
   const handleTypeFilterPress = () => typeSheetRef.current?.expand();
   const handleOrderFilterPress = () => orderSheetRef.current?.expand();
 
   const handleTypeSelection = (type: string) => {
     setSelectedType(type);
-    setPage(0);
-    setPokemonList([]);
     typeSheetRef.current?.close();
   };
 
   const handleOrderSelection = (order: string) => {
     setSelectedOrder(order);
-    typeSheetRef.current?.close();
+    orderSheetRef.current?.close();
   };
 
-  const fetchPokemons = async (page: number, selectedType: string) => {
-    const limit = 50;
+  const fetchAllPokemons = async () => {
     try {
-      let fetchedPokemonList = [];
+      // Verifica se os dados já estão em cache
+      const cachedPokemonList = await AsyncStorage.getItem('allPokemonList');
+      if (cachedPokemonList) {
+        const parsedList = JSON.parse(cachedPokemonList);
+        setAllPokemonList(parsedList);
+        setFilteredPokemonList(parsedList);
+        return;
+      }
 
-      if (selectedType === "Todos os tipos") {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${page * limit}`);
-        const data = await response.json();
-        fetchedPokemonList = await Promise.all(
-          data.results.map(async (pokemon: any) => {
+      // Se não estiver em cache, busca todos os Pokémon da API
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10000`);
+      const data = await response.json();
+
+      // Mapeia os resultados para obter detalhes de cada Pokémon
+      const detailedPokemonList: Pokemon[] = await Promise.all(
+        data.results.map(async (pokemon: any) => {
+          try {
             const res = await fetch(pokemon.url);
             const details = await res.json();
             return {
@@ -57,158 +80,217 @@ const HomeScreen = () => {
               types: details.types.map((typeInfo: any) => typeInfo.type.name),
               img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${details.id}.png`,
             };
-          })
-        );
-      } else {
-        const response = await fetch(`https://pokeapi.co/api/v2/type/${selectedType.toLowerCase()}`);
-        const data = await response.json();
-        const pokemonListByType = data.pokemon.slice(page * limit, (page + 1) * limit);
-        fetchedPokemonList = await Promise.all(
-          pokemonListByType.map(async (pokemonInfo: any) => {
-            const res = await fetch(pokemonInfo.pokemon.url);
-            const details = await res.json();
-            return {
-              id: details.id,
-              name: details.name,
-              types: details.types.map((typeInfo: any) => typeInfo.type.name),
-              img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${details.id}.png`,
-            };
-          })
-        );
-      }
+          } catch (error) {
+            console.error(`Error fetching details for ${pokemon.name}:`, error);
+            return null;
+          }
+        })
+      );
 
-      setPokemonList(prevList => [...prevList, ...fetchedPokemonList]);
+      // Remove possíveis valores nulos resultantes de erros na busca de detalhes
+      const filteredList = detailedPokemonList.filter((pokemon) => pokemon !== null) as Pokemon[];
+
+      // Armazena os dados no estado e no cache
+      setAllPokemonList(filteredList);
+      setFilteredPokemonList(filteredList);
+      await AsyncStorage.setItem('allPokemonList', JSON.stringify(filteredList));
     } catch (error) {
       console.error('Error fetching Pokémons:', error);
     } finally {
       setLoading(false);
-      setIsFetchingMore(false);
     }
   };
 
+  // Efeito para carregar os Pokémon ao montar o componente
   useEffect(() => {
-    fetchPokemons(page, selectedType);
-  }, [page, selectedType]);
+    fetchAllPokemons();
+  }, []);
 
-  const handleLoadMore = () => {
-    if (!isFetchingMore) {
-      setIsFetchingMore(true);
-      setPage(prevPage => prevPage + 1);
+  // Efeito para filtrar e ordenar a lista sempre que os critérios mudarem
+  useEffect(() => {
+    let updatedList = [...allPokemonList];
+
+    // Filtragem por tipo
+    if (selectedType !== 'Todos os tipos') {
+      updatedList = updatedList.filter((pokemon) =>
+        pokemon.types.includes(selectedType.toLowerCase() as PokemonType)
+      );
     }
-  };
 
+    // Filtragem por busca
+    if (searchQuery.trim() !== '') {
+      updatedList = updatedList.filter((pokemon) =>
+        pokemon.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Ordenação
+    switch (selectedOrder) {
+      case Order.NUMERICAL_ASC:
+        updatedList.sort((a, b) => a.id - b.id);
+        break;
+      case Order.NUMERICAL_DESC:
+        updatedList.sort((a, b) => b.id - a.id);
+        break;
+      case Order.ALPHABETICAL_ASC:
+        updatedList.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case Order.ALPHABETICAL_DESC:
+        updatedList.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        break;
+    }
+
+    setFilteredPokemonList(updatedList);
+  }, [allPokemonList, selectedType, selectedOrder, searchQuery]);
+
+  // Renderização dos itens da lista de Pokémon
   const renderPokemonItem = ({ item }: { item: Pokemon }) => (
-    <PokemonCard pokemon={item} />
+    <PokemonCard key={item.id} pokemon={item} />
   );
 
-  const renderFooter = () => {
-    return isFetchingMore ? <ActivityIndicator size="large" color="#333" /> : null;
+  // Renderização dos botões de tipo
+  const renderTypeButton = ({ item }: { item: string }) => {
+    const backgroundColor =
+      item === 'Todos os tipos' ? '#333' : getTypeColor(item as PokemonType);
+    const textColor = getTextColor(backgroundColor ?? '#666');
+
+    return (
+      <Pressable
+        style={[styles.typeButton, { backgroundColor }]}
+        onPress={() => handleTypeSelection(item)}
+      >
+        <Text style={[styles.typeButtonText, { color: textColor }]}>
+          {capitalizeFirstLetter(item)}
+        </Text>
+      </Pressable>
+    );
   };
 
-  const renderTypeButton = useCallback(
-    ({ item }: { item: string }) => {
-      const backgroundColor = item === "Todos os tipos" ? "#333" : getTypeColor(item as PokemonType);
-      const textColor = getTextColor(backgroundColor ?? '#666');
-      
-      return (
-        <Pressable
-          style={[styles.typeButton, { backgroundColor }]}
-          onPress={() => handleTypeSelection(item)}
+  // Renderização dos botões de ordenação
+  const renderOrderButton = ({ item }: { item: string }) => {
+    return (
+      <Pressable
+        style={[
+          styles.orderButton,
+          selectedOrder === item && styles.orderButtonSelected,
+        ]}
+        onPress={() => handleOrderSelection(item)}
+      >
+        <Text
+          style={[
+            styles.orderButtonText,
+            selectedOrder === item && styles.orderButtonTextSelected,
+          ]}
         >
-          <Text style={[styles.typeButtonText, { color: textColor }]}>{capitalizeFirstLetter(item)}</Text>
-        </Pressable>
-      );
-    },
-    []
-  );
+          {item}
+        </Text>
+      </Pressable>
+    );
+  };
 
-  const renderOrderButton = useCallback(
-    ({ item }: { item: string }) => {
-      return (
-        <Pressable
-          style={styles.orderButton}
-          onPress={() => handleOrderSelection(item)}
-        >
-          <Text style={styles.orderButtonText}>{capitalizeFirstLetter(item)}</Text>
-        </Pressable>
-      );
-    },
-    []
-  );
-
-  const backgroundColor = selectedType === "Todos os tipos" ? '#333' : getTypeColor(selectedType as PokemonType);
-  const textColor = getTextColor(backgroundColor);
+  // Cores dinâmicas dos botões de filtro
+  const typeBackgroundColor =
+    selectedType === 'Todos os tipos'
+      ? '#333'
+      : getTypeColor(selectedType.toLowerCase() as PokemonType);
+  const typeTextColor = getTextColor(typeBackgroundColor);
 
   return (
     <GestureHandlerRootView>
       <SafeAreaView style={styles.container}>
-        <View>
-          <TextInput
-            placeholder="Procurar Pokémon..."
-            cursorColor="#000"
-            style={styles.searchBar}
-          />
-        </View>
+        {/* Barra de busca */}
+        <TextInput
+          placeholder="Procurar Pokémon..."
+          cursorColor="#000"
+          style={styles.searchBar}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
 
+        {/* Botões de filtro */}
         <View style={styles.filterContainer}>
-          <Pressable style={[styles.filterButton, { backgroundColor }]} onPress={handleTypeFilterPress}>
-              <Text style={[styles.filterButtonText, { color: textColor }]}>
-                {capitalizeFirstLetter(selectedType)}
-              </Text>
-            <Ionicons name="chevron-down" size={16} style={styles.icon} color={textColor}/>
+          <Pressable
+            style={[styles.filterButton, { backgroundColor: typeBackgroundColor }]}
+            onPress={handleTypeFilterPress}
+          >
+            <Text style={[styles.filterButtonText, { color: typeTextColor }]}>
+              {capitalizeFirstLetter(selectedType)}
+            </Text>
+            <Ionicons name="chevron-down" size={16} style={styles.icon} color={typeTextColor} />
           </Pressable>
 
           <Pressable style={styles.filterButton} onPress={handleOrderFilterPress}>
             <Text style={styles.filterButtonText}>
               {capitalizeFirstLetter(selectedOrder)}
             </Text>
-            <Ionicons name="chevron-down" size={16} style={styles.icon} color='#fff'/>
+            <Ionicons name="chevron-down" size={16} style={styles.icon} color="#fff" />
           </Pressable>
         </View>
 
+        {/* Lista de Pokémon */}
         <View style={styles.listContainer}>
-          {loading && page === 0 ? (
-            <ActivityIndicator size="large" color="#333" />
+          {loading ? (
+            // Skeleton Loader enquanto carrega os dados
+            <FlatList
+              data={Array.from({ length: 20 })}
+              renderItem={() => <PokemonCardSkeleton />}
+              keyExtractor={(_, index) => index.toString()}
+              showsVerticalScrollIndicator={false}
+            />
           ) : (
             <FlatList
-              data={pokemonList}
+              data={filteredPokemonList}
               renderItem={renderPokemonItem}
               keyExtractor={(item: Pokemon) => item.id.toString()}
-              onEndReached={handleLoadMore}
-              onEndReachedThreshold={0.1}
-              ListFooterComponent={renderFooter}
+              showsVerticalScrollIndicator={false}
+              initialNumToRender={20}
+              maxToRenderPerBatch={20}
+              ListEmptyComponent={
+                <Text style={styles.emptyText}>Nenhum Pokémon encontrado.</Text>
+              }
             />
           )}
         </View>
 
+        {/* BottomSheet de tipos */}
         <BottomSheet
-          ref={typeSheetRef}
-          snapPoints={typeSnapPoints}
-          index={-1}
-          enablePanDownToClose
-        >
-          <Text style={styles.bottomSheetTitle}>Selecione o tipo</Text>
-          <BottomSheetFlatList
-            data={["Todos os tipos", ...sortedTypes]}
-            keyExtractor={(item, index) => `${item}-${index}`}
-            renderItem={renderTypeButton}
-            contentContainerStyle={styles.contentContainerBottomSheet}
-          />
+            ref={typeSheetRef}
+            snapPoints={typeSnapPoints}
+            backgroundStyle={styles.bottomSheetBackground}
+            index={-1}
+            enablePanDownToClose>
+            <View style={styles.bottomSheetHeader}>
+              <Text style={styles.bottomSheetTitle}>Selecione o tipo</Text>
+            </View>
+            <BottomSheetFlatList
+              data={['Todos os tipos', ...sortedTypes]}
+              keyExtractor={(item) => item}
+              renderItem={renderTypeButton}
+              contentContainerStyle={styles.bottomSheetContent}
+              showsVerticalScrollIndicator={false}
+            />
         </BottomSheet>
 
+        {/* BottomSheet de ordenação */}
         <BottomSheet
-          ref={orderSheetRef}
-          snapPoints={orderSnapPoints}
-          index={-1}
-          enablePanDownToClose
-        >
-          <Text style={styles.bottomSheetTitle}>Selecione a ordem</Text>
-          <BottomSheetFlatList
-            data={["Menor número", "Maior número", "A-Z", "Z-A"]}
-            keyExtractor={(item) => item}
-            renderItem={renderOrderButton}
-            contentContainerStyle={styles.contentContainerBottomSheet}
-          />
+            ref={orderSheetRef}
+            snapPoints={orderSnapPoints}
+            backgroundStyle={styles.bottomSheetBackground}
+            index={-1}
+            enablePanDownToClose
+          >
+            <View style={styles.bottomSheetHeader}>
+              <Text style={styles.bottomSheetTitle}>Selecione a ordem</Text>
+            </View>
+            <BottomSheetFlatList
+              data={['Menor número', 'Maior número', 'A-Z', 'Z-A']}
+              keyExtractor={(item) => item}
+              renderItem={renderOrderButton}
+              contentContainerStyle={styles.bottomSheetContent}
+              showsVerticalScrollIndicator={false}
+            />
         </BottomSheet>
       </SafeAreaView>
     </GestureHandlerRootView>
@@ -250,7 +332,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: 14,
     color: '#fff',
-    alignItems: 'center'
+    marginRight: 8,
   },
   listContainer: {
     marginTop: 20,
@@ -260,41 +342,60 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 16
   },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 50,
+    fontSize: 18,
+    color: '#555',
+    fontFamily: 'Poppins-Regular',
+  },
   typeButton: {
     paddingVertical: 10,
-    paddingHorizontal: 20,
     borderRadius: 20,
-    marginVertical: 5,
+    marginVertical: 6,
     alignItems: 'center',
   },
   typeButtonText: {
     color: '#fff',
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 14,
+    fontSize: 16,
   },
   orderButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 12,
     borderRadius: 20,
-    marginVertical: 5,
+    marginVertical: 6,
     alignItems: 'center',
-    backgroundColor: '#333'
+    backgroundColor: '#f2f2f2',
+  },
+  orderButtonSelected: {
+    backgroundColor: '#333',
   },
   orderButtonText: {
-    color: '#fff',
+    fontSize: 16,
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 14,
+    color: '#333',
   },
-  contentContainerBottomSheet: {
-    backgroundColor: "white",
-    paddingHorizontal: 16,
+  orderButtonTextSelected: {
+    color: '#fff',
+  },
+  bottomSheetBackground: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+  bottomSheetHeader: {
+    alignItems: 'center',
+    paddingVertical: 16,
   },
   bottomSheetTitle: {
-    textAlign: 'center',
+    fontSize: 18,
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 16,
-    marginBottom: 32
-  }
+    color: '#333',
+  },
+  bottomSheetContent: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+  },
 });
 
 export default HomeScreen;
