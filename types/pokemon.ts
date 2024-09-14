@@ -24,5 +24,23 @@ export type PokemonType = keyof PokemonTypes;
 export interface Pokemon {
   id: number,
   name: string,
-  types: PokemonType[]
+  types: PokemonType[],
+  abilities: Abilities[],
+  weight: number,
+  height: number,
+  capture_rate: number,
+  gender_rate: number,
+  flavor_text: string,
+  genus: string,
+}
+
+export interface Ability {
+  name: string,
+  url: string
+}
+
+export interface Abilities {
+  ability: Ability
+  is_hidden: boolean,
+  slot: number
 }
