@@ -4,6 +4,7 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import PokemonTypeIcon from "./PokemonTypeIcon";
 import { getTypeGradientIcon } from "@/utils/types/gradient";
+import { formatPokemonNumber } from "@/utils/string";
 
 interface PokemonCardProps {
   pokemon: Pokemon
@@ -18,9 +19,9 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
   return (
     <View style={[styles.container, { backgroundColor: `${getTypeColor(types[0])}15` }]}>
       <View style={styles.infoContainer}>
-        <Text style={styles.number}>Nº{(id/1000).toFixed(3).split('.').join("")}</Text>
+        <Text style={styles.number}>Nº{formatPokemonNumber(id)}</Text>
         <Text style={styles.name}>{name}</Text>
-        <View style={styles.elementContainer}>
+        <View style={styles.typeContainer}>
           {types.map((type, index) => {
             const backgroundColor = getTypeColor(type);
             const textColor = getTextColor(backgroundColor);
@@ -28,10 +29,10 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
             return (
               <View
                 key={index}
-                style={[styles.elementBadge, { backgroundColor }]}
+                style={[styles.typeBadge, { backgroundColor }]}
               >
                 <PokemonTypeIcon type={type}/>
-                <Text style={[styles.elementText, { color: textColor }]}>{type}</Text>
+                <Text style={[styles.typeText, { color: textColor }]}>{type}</Text>
               </View>
             )
           })}
@@ -71,11 +72,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textTransform: 'capitalize',
   },
-  elementContainer: {
+  typeContainer: {
     display: 'flex',
     flexDirection: 'row',
   },
-  elementBadge: {
+  typeBadge: {
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: '#eee',
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
     alignItems: 'center'
   },
-  elementText: {
+  typeText: {
     fontFamily: 'Poppins-Regular',
     fontSize: 11,
     marginLeft: 4,
