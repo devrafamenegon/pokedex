@@ -1,6 +1,6 @@
-import { PokemonType, PokemonTypes } from "@/types/pokemon";
+import { PokemonType, PokemonTypesObj } from "@/types/pokemon";
 
-export const typeColors: PokemonTypes = {
+export const typeColors: PokemonTypesObj = {
   normal: '#919AA2',
   fire: '#FF9D55',
   water: '#5090D6',
