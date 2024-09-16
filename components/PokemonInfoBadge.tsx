@@ -33,7 +33,7 @@ const PokemonInfoBadge: React.FC<PokemonInfoBadgeProps> = ({
         {typeof value === 'string' ? (
           <Text style={styles.value}>{capitalizeFirstLetter(value)}</Text>
         ) : (
-          value.map((v) => <Text style={styles.value}>{capitalizeFirstLetter(v)}</Text>) 
+          value.map((v, index) => <Text style={styles.value} key={index}>{capitalizeFirstLetter(v)}</Text>) 
         )}
       </View>
     </View>
