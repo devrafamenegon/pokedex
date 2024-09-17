@@ -2,41 +2,39 @@ import React, { useMemo, forwardRef } from "react";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { getTextColor, getTypeColor } from "@/utils/types/colors";
+import { PokemonType } from "@/types/pokemon";
+import { capitalizeFirstLetter } from "@/utils/string";
 
 interface OrderBottomSheetProps {
-  selectedOrder: string;
-  setSelectedOrder: (order: string) => void;
+  sortedTypes: string[];
+  setSelectedType: (type: string) => void;
 }
 
-const OrderBottomSheet = forwardRef<
+const TypeBottomSheet = forwardRef<
   BottomSheetModalMethods,
   OrderBottomSheetProps
->(({ selectedOrder, setSelectedOrder }, ref) => {
-  const orderSnapPoints = useMemo(() => ["40%"], []);
+>(({ setSelectedType, sortedTypes }, ref) => {
+  const typeSnapPoints = useMemo(() => ["30%", "60%"], []);
 
-  const handleOrderSelection = (order: string) => {
-    setSelectedOrder(order);
+  const handleTypeSelection = (order: string) => {
+    setSelectedType(order);
     (ref as React.RefObject<BottomSheetModalMethods>).current?.close();
   };
 
-  // Renderização dos botões de ordenação
-  const renderOrderButton = ({ item }: { item: string }) => {
+  // Renderização dos botões de tipo
+  const renderTypeButton = ({ item }: { item: string }) => {
+    const backgroundColor =
+      item === "Todos os tipos" ? "#333" : getTypeColor(item as PokemonType);
+    const textColor = getTextColor(backgroundColor ?? "#666");
+
     return (
       <Pressable
-        style={[
-          styles.orderButton,
-          selectedOrder === item && styles.orderButtonSelected,
-        ]}
-        onPress={() => handleOrderSelection(item)}
+        style={[styles.typeButton, { backgroundColor }]}
+        onPress={() => handleTypeSelection(item)}
       >
-        <Text
-          style={[
-            styles.orderButtonText,
-            selectedOrder === item && styles.orderButtonTextSelected,
-          ]}
-        >
-          {item}
+        <Text style={[styles.typeButtonText, { color: textColor }]}>
+          {capitalizeFirstLetter(item)}
         </Text>
       </Pressable>
     );
@@ -45,18 +43,18 @@ const OrderBottomSheet = forwardRef<
   return (
     <BottomSheet
       ref={ref}
-      snapPoints={orderSnapPoints}
+      snapPoints={typeSnapPoints}
       backgroundStyle={styles.bottomSheetBackground}
       index={-1}
       enablePanDownToClose
     >
       <View style={styles.bottomSheetHeader}>
-        <Text style={styles.bottomSheetTitle}>Selecione a ordem</Text>
+        <Text style={styles.bottomSheetTitle}>Selecione o tipo</Text>
       </View>
       <BottomSheetFlatList
-        data={["Menor número", "Maior número", "A-Z", "Z-A"]}
+        data={["Todos os tipos", ...sortedTypes]}
         keyExtractor={(item) => item}
-        renderItem={renderOrderButton}
+        renderItem={renderTypeButton}
         contentContainerStyle={styles.bottomSheetContent}
         showsVerticalScrollIndicator={false}
       />
@@ -65,23 +63,16 @@ const OrderBottomSheet = forwardRef<
 });
 
 const styles = StyleSheet.create({
-  orderButton: {
-    paddingVertical: 12,
+  typeButton: {
+    paddingVertical: 10,
     borderRadius: 20,
     marginVertical: 6,
     alignItems: "center",
-    backgroundColor: "#f2f2f2",
   },
-  orderButtonSelected: {
-    backgroundColor: "#333",
-  },
-  orderButtonText: {
-    fontSize: 16,
-    fontFamily: "Poppins-SemiBold",
-    color: "#333",
-  },
-  orderButtonTextSelected: {
+  typeButtonText: {
     color: "#fff",
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 16,
   },
   bottomSheetBackground: {
     backgroundColor: "#fff",
@@ -103,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderBottomSheet;
+export default TypeBottomSheet;
