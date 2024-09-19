@@ -13,7 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import BackArrowIcon from "@/components/icon/back-arrow";
 import FavoriteIcon from "@/components/icon/favorite";
 import PokemonInfoBadge from "@/components/PokemonInfoBadge";
-import { Pokemon } from "@/types/pokemon";
+import { Evolution, Pokemon } from "@/types/pokemon";
 import { formatPokemonNumber } from "@/utils/string";
 import { getTypeColor } from "@/utils/types/colors";
 import TypeGradientIcon from "@/components/TypeGradientIcon";
@@ -23,6 +23,7 @@ import PokemonTypeBadge from "@/components/PokemonTypeBadge";
 import PokemonTypeBadgeGrid from "@/components/PokemonTypeBadgeGrid";
 import EvolutionCard from "@/components/EvolutionCard";
 import DownArrowIcon from "@/components/icon/down-arrow";
+import useFetchEvolutions from "@/hooks/useFetchEvolutions";
 
 const DetailsScreen = () => {
   const router = useRouter();
@@ -64,6 +65,8 @@ const DetailsScreen = () => {
       console.error("Error fetching Pokémons:", error);
     }
   };
+
+  const { evolutions, loading, error } = useFetchEvolutions(Number(id));
 
   useEffect(() => {
     fetchSelectedPokemon();
@@ -121,7 +124,7 @@ const DetailsScreen = () => {
           ))}
         </View>
         <Text style={styles.pokemonBio}>
-          {selectedPokemon?.flavor_text.replaceAll("\n", " ")}
+          {selectedPokemon?.flavor_text?.replaceAll("\n", " ")}
         </Text>
 
         <View style={styles.divider} />
@@ -182,27 +185,34 @@ const DetailsScreen = () => {
             />
           </View>
         </View>
+
         <View style={styles.evolutionContainer}>
           <Text style={styles.evolutionText}>Evoluções</Text>
           <View style={styles.evolutionCard}>
-            {selectedPokemon?.evolution_chain?.map((evo, index) => (
-              <View>
-                {evo.condition?.trigger ? (
-                  <View style={styles.evolutionConditionContainer}>
-                    <DownArrowIcon />
-                    <Text style={styles.evolutionConditionText}>
-                      {evo.condition?.trigger.replace("-", " ")}{" "}
-                      {evo.condition?.min_level}
-                    </Text>
-                  </View>
-                ) : null}
-                <EvolutionCard
-                  id={evo?.id ?? 0}
-                  name={evo?.name ?? "Não encontrado"}
-                  types={evo?.types ?? []}
-                />
-              </View>
-            ))}
+            {loading ? (
+              <Text>Carregando evoluções...</Text>
+            ) : error ? (
+              <Text>Erro ao carregar evoluções.</Text>
+            ) : (
+              evolutions?.map((evo: Evolution, index: number) => (
+                <View key={index}>
+                  {evo.condition?.trigger && (
+                    <View style={styles.evolutionConditionContainer}>
+                      <DownArrowIcon />
+                      <Text style={styles.evolutionConditionText}>
+                        {evo.condition?.trigger.replace("-", " ")}{" "}
+                        {evo.condition?.min_level}
+                      </Text>
+                    </View>
+                  )}
+                  <EvolutionCard
+                    id={evo?.id ?? 0}
+                    name={evo?.name ?? "Não encontrado"}
+                    types={evo?.types ?? []}
+                  />
+                </View>
+              ))
+            )}
           </View>
         </View>
       </View>
