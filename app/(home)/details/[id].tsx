@@ -24,6 +24,7 @@ import PokemonTypeBadgeGrid from "@/components/PokemonTypeBadgeGrid";
 import EvolutionCard from "@/components/EvolutionCard";
 import DownArrowIcon from "@/components/icon/down-arrow";
 import useFetchEvolutions from "@/hooks/useFetchEvolutions";
+import useFetchPokemonDetails from "@/hooks/useFetchPokemonDetails";
 
 const DetailsScreen = () => {
   const router = useRouter();
@@ -70,6 +71,7 @@ const DetailsScreen = () => {
 
   useEffect(() => {
     fetchSelectedPokemon();
+    setSelectedPokemon(useFetchPokemonDetails(selectedPokemon!));
     setStatusBarHeight(StatusBar.currentHeight ? StatusBar.currentHeight : 30);
   }, [id]);
 
