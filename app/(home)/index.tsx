@@ -11,11 +11,14 @@ import FilterButton from "@/components/FilterButton";
 import { orderPokemonList } from "@/utils/order";
 import PokemonList from "@/components/PokemonList";
 import { filterPokemonList } from "@/utils/filter";
+import { Order } from "@/enums/order";
 
 const HomeScreen = () => {
-  const { allPokemonList, loading } = useFetchPokemons();
+  const { allPokemonList, isLoading, loadMorePokemons, setOrder } =
+    useFetchPokemons();
 
-  const [filteredPokemonList, setFilteredPokemonList] = useState<Pokemon[]>([]);
+  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+
   const [selectedType, setSelectedType] = useState<string>("Todos os tipos");
   const [selectedOrder, setSelectedOrder] = useState<string>("Menor número");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -23,18 +26,33 @@ const HomeScreen = () => {
   const typeSheetRef = useRef<BottomSheetModal>(null);
   const orderSheetRef = useRef<BottomSheetModal>(null);
 
-  const handleTypeFilterPress = () => typeSheetRef.current?.expand();
-  const handleOrderFilterPress = () => orderSheetRef.current?.expand();
+  const handleTypeFilterPress = () => {
+    orderSheetRef.current?.close();
+    typeSheetRef.current?.expand();
+  };
+  const handleOrderFilterPress = () => {
+    typeSheetRef.current?.close();
+    orderSheetRef.current?.expand();
+  };
+
+  const handleOrderChange = (newOrder: string) => {
+    setOrder(newOrder === Order.NUMERICAL_DESC ? "desc" : "asc");
+    setSelectedOrder(newOrder);
+  };
 
   useEffect(() => {
-    const filteredList = filterPokemonList(
+    let filteredList: Pokemon[] = filterPokemonList(
       allPokemonList,
       selectedType,
       searchQuery
     );
-    const orderedList = orderPokemonList(filteredList, selectedOrder);
 
-    setFilteredPokemonList(orderedList);
+    const orderedList: Pokemon[] = orderPokemonList(
+      filteredList,
+      selectedOrder
+    );
+
+    setPokemonList(orderedList);
   }, [allPokemonList, selectedType, selectedOrder, searchQuery]);
 
   return (
@@ -66,7 +84,11 @@ const HomeScreen = () => {
 
         {/* Pokemon list */}
         <View style={styles.listContainer}>
-          <PokemonList loading={loading} data={filteredPokemonList} />
+          <PokemonList
+            isLoading={isLoading}
+            data={pokemonList}
+            onEndReached={loadMorePokemons}
+          />
         </View>
       </SafeAreaView>
 
@@ -79,7 +101,7 @@ const HomeScreen = () => {
       <OrderBottomSheet
         ref={orderSheetRef}
         selectedOrder={selectedOrder}
-        setSelectedOrder={setSelectedOrder}
+        setSelectedOrder={handleOrderChange}
       />
     </GestureHandlerRootView>
   );
