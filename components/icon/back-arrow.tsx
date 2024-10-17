@@ -12,7 +12,7 @@ const BackArrowIcon = (props: SvgProps) => {
     >
       <Path
         d="M22.166 12.667L15.833 19l6.333 6.333"
-        stroke="#000"
+        stroke={props.stroke ?? "#000"}
         strokeWidth={2.5}
         strokeLinecap="round"
         strokeLinejoin="round"

@@ -8,9 +8,22 @@
       "distribution": "internal"
     },
     "preview": {
+      "extends": "production",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "node": "20.11.1",
+      "env": {
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_bmV1dHJhbC1hc3AtODYuY2xlcmsuYWNjb3VudHMuZGV2JA",
+        "EXPO_PUBLIC_CACHE_TIME_IN_MS": "604800000",
+        "EXPO_PUBLIC_POKEMON_API_LIMIT": "10",
+        "EXPO_PUBLIC_POKEMON_API_URL": "https://pokeapi.co/api/v2"
+      }
+    }
   },
   "submit": {
     "production": {}

@@ -1,45 +1,48 @@
 import { Pokemon } from "@/types/pokemon";
-import { getTextColor, getTypeColor } from "@/utils/types/colors";
+import { getTypeColor } from "@/utils/types/colors";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import PokemonTypeIcon from "./PokemonTypeIcon";
 import { getTypeGradientIcon } from "@/utils/types/gradient";
+import { formatPokemonNumber } from "@/utils/string";
+import PokemonTypeBadge from "./PokemonTypeBadge";
 
 interface PokemonCardProps {
-  pokemon: Pokemon
+  pokemon: Pokemon;
 }
 
-const PokemonCard: React.FC<PokemonCardProps> = ({
-  pokemon
-}) => {
+const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
   const { id, name, types } = pokemon;
   const IconComponent = getTypeGradientIcon(types[0]);
 
   return (
-    <View style={[styles.container, { backgroundColor: `${getTypeColor(types[0])}15` }]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: `${getTypeColor(types[0])}15` },
+      ]}
+    >
       <View style={styles.infoContainer}>
-        <Text style={styles.number}>Nº{(id/1000).toFixed(3).split('.').join("")}</Text>
+        <Text style={styles.number}>Nº{formatPokemonNumber(id)}</Text>
         <Text style={styles.name}>{name}</Text>
-        <View style={styles.elementContainer}>
-          {types.map((type, index) => {
-            const backgroundColor = getTypeColor(type);
-            const textColor = getTextColor(backgroundColor);
-
-            return (
-              <View
-                key={index}
-                style={[styles.elementBadge, { backgroundColor }]}
-              >
-                <PokemonTypeIcon type={type}/>
-                <Text style={[styles.elementText, { color: textColor }]}>{type}</Text>
-              </View>
-            )
-          })}
+        <View style={styles.typeContainer}>
+          {types.map((type, index) => (
+            <PokemonTypeBadge type={type} key={index} />
+          ))}
         </View>
       </View>
-      <View style={[styles.imageContainer, { backgroundColor: getTypeColor(types[0]) }]}>
-        <IconComponent style={styles.imageBackgroundIcon}/>
-        <Image source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif` }} style={styles.image} />
+      <View
+        style={[
+          styles.imageContainer,
+          { backgroundColor: getTypeColor(types[0]) },
+        ]}
+      >
+        <IconComponent style={styles.imageBackgroundIcon} />
+        <Image
+          source={{
+            uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`,
+          }}
+          style={styles.image}
+        />
       </View>
     </View>
   );
@@ -47,68 +50,68 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     borderRadius: 15,
     marginBottom: 10,
-    alignItems: 'center'
+    alignItems: "center",
   },
   infoContainer: {
-    flex: 4/6,
+    flex: 4 / 6,
     paddingHorizontal: 16,
-    paddingVertical: 12
+    paddingVertical: 12,
   },
   number: {
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: "Poppins-SemiBold",
     fontSize: 14,
-    color: '#333',
+    color: "#333",
     marginBottom: 4,
   },
   name: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
-    textTransform: 'capitalize',
+    textTransform: "capitalize",
   },
-  elementContainer: {
-    display: 'flex',
-    flexDirection: 'row',
+  typeContainer: {
+    display: "flex",
+    flexDirection: "row",
   },
-  elementBadge: {
-    display: 'flex',
-    flexDirection: 'row',
-    backgroundColor: '#eee',
+  typeBadge: {
+    display: "flex",
+    flexDirection: "row",
+    backgroundColor: "#eee",
     borderRadius: 48,
     paddingHorizontal: 8,
     paddingVertical: 4,
     marginRight: 6,
-    alignItems: 'center'
+    alignItems: "center",
   },
-  elementText: {
-    fontFamily: 'Poppins-Regular',
+  typeText: {
+    fontFamily: "Poppins-Regular",
     fontSize: 11,
     marginLeft: 4,
-    textTransform: 'capitalize',
-    lineHeight: 15
+    textTransform: "capitalize",
+    lineHeight: 15,
   },
   imageContainer: {
-    flex: 2/6,
+    flex: 2 / 6,
     height: 100,
-    justifyContent: 'center',
+    justifyContent: "center",
     borderRadius: 15,
   },
   image: {
-    width: '90%',
-    height: '90%',
-    resizeMode: 'contain',
-    display: 'flex',
-    alignSelf: 'center'
-  }, 
+    width: "90%",
+    height: "90%",
+    resizeMode: "contain",
+    display: "flex",
+    alignSelf: "center",
+  },
   imageBackgroundIcon: {
-    position: 'absolute',
-    alignSelf: 'center'
-  }
+    position: "absolute",
+    alignSelf: "center",
+  },
 });
 
 export default PokemonCard;
