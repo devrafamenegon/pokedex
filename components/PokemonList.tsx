@@ -1,45 +1,70 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import PokemonCardSkeleton from "./PokemonCardSkeleton";
 import { Pokemon } from "@/types/pokemon";
 import PokemonCard from "./PokemonCard";
 import { useRouter } from "expo-router";
+import { getLimit } from "@/utils/limit";
+import React, { useCallback } from "react";
 
 interface PokemonListProps {
-  loading: boolean;
+  isLoading: boolean;
   data: Pokemon[];
+  onEndReached: () => void;
 }
 
-const PokemonList: React.FC<PokemonListProps> = ({ loading, data }) => {
+const PokemonList: React.FC<PokemonListProps> = ({
+  isLoading,
+  data,
+  onEndReached,
+}) => {
   const router = useRouter();
+  const limit = getLimit();
 
-  const renderPokemonItem = ({ item }: { item: Pokemon }) => (
-    <Pressable onPress={() => router.push(`/details/${item.id}`)}>
-      <PokemonCard key={item.id} pokemon={item} />
-    </Pressable>
+  const renderPokemonItem = useCallback(
+    ({ item }: { item: Pokemon }) => (
+      <Pressable onPress={() => router.push(`/details/${item.id}`)}>
+        <PokemonCard key={item.id} pokemon={item} />
+      </Pressable>
+    ),
+    [router]
+  );
+
+  const listFooterComponent = useCallback(() => {
+    return (
+      <FlatList
+        data={Array.from({ length: 2 })}
+        renderItem={() => <PokemonCardSkeleton />}
+        keyExtractor={(_, index) => index.toString()}
+        showsVerticalScrollIndicator={false}
+      />
+    );
+  }, []);
+
+  const listEmptyComponent = useCallback(
+    () => <Text style={styles.emptyText}>Nenhum Pokémon encontrado.</Text>,
+    []
   );
 
   return (
     <View>
-      {loading ? (
-        <FlatList
-          data={Array.from({ length: 20 })}
-          renderItem={() => <PokemonCardSkeleton />}
-          keyExtractor={(_, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <FlatList
-          data={data}
-          renderItem={renderPokemonItem}
-          keyExtractor={(item: Pokemon) => item.id.toString()}
-          showsVerticalScrollIndicator={false}
-          initialNumToRender={20}
-          maxToRenderPerBatch={20}
-          ListEmptyComponent={
-            <Text style={styles.emptyText}>Nenhum Pokémon encontrado.</Text>
-          }
-        />
-      )}
+      <FlatList
+        data={data}
+        renderItem={renderPokemonItem}
+        keyExtractor={(item: Pokemon) => item.id.toString()}
+        showsVerticalScrollIndicator={false}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={1}
+        initialNumToRender={limit}
+        maxToRenderPerBatch={limit}
+        ListEmptyComponent={!isLoading ? listEmptyComponent : null}
+        ListFooterComponent={listFooterComponent}
+      />
     </View>
   );
 };
@@ -52,6 +77,10 @@ const styles = StyleSheet.create({
     color: "#555",
     fontFamily: "Poppins-Regular",
   },
+  loadingMoreContainer: {
+    paddingVertical: 20,
+    alignItems: "center",
+  },
 });
 
-export default PokemonList;
+export default React.memo(PokemonList);
