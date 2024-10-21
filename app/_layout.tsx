@@ -1,24 +1,25 @@
 import { useFonts } from "expo-font";
 import { Slot, SplashScreen } from "expo-router";
 import { useEffect } from "react";
-import { ClerkProvider, ClerkLoaded } from '@clerk/clerk-expo';
+import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
+import { PokemonProvider } from "@/contexts/pokemon";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded] = useFonts({
-    "Poppins-Regular": require('../assets/fonts/Poppins-Regular.ttf'),
-    "Poppins-Medium": require('../assets/fonts/Poppins-Medium.ttf'),
-    "Poppins-SemiBold": require('../assets/fonts/Poppins-SemiBold.ttf'),
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
   });
 
-  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
+  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
   if (!publishableKey) {
     throw new Error(
-      'Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env',
-    )
+      "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
+    );
   }
 
   useEffect(() => {
@@ -34,8 +35,10 @@ export default function RootLayout() {
   return (
     <ClerkProvider publishableKey={publishableKey}>
       <ClerkLoaded>
-        <Slot />
+        <PokemonProvider>
+          <Slot />
+        </PokemonProvider>
       </ClerkLoaded>
     </ClerkProvider>
-  );  
+  );
 }

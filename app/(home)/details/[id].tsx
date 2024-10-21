@@ -25,8 +25,10 @@ import EvolutionCard from "@/components/EvolutionCard";
 import DownArrowIcon from "@/components/icon/down-arrow";
 import useFetchEvolutions from "@/hooks/useFetchEvolutions";
 import useFetchPokemonDetails from "@/hooks/useFetchPokemonDetails";
+import { usePokemon } from "@/contexts/pokemon";
 
 const DetailsScreen = () => {
+  const { allPokemonList } = usePokemon();
   const router = useRouter();
   const { id } = useLocalSearchParams();
 
@@ -42,36 +44,39 @@ const DetailsScreen = () => {
 
   const fetchSelectedPokemon = async () => {
     try {
-      const cachedPokemonList = await AsyncStorage.getItem("allPokemonList");
+      const pokemon = allPokemonList.find(
+        (pokemon) => pokemon.id.toString() === id.toString()
+      );
 
-      if (cachedPokemonList) {
-        const parsedList = JSON.parse(cachedPokemonList) as Pokemon[];
-        const pokemon = parsedList.find(
-          (pokemon) => pokemon.id.toString() === id.toString()
-        );
+      console.log(allPokemonList);
 
-        if (pokemon) {
-          setSelectedPokemon(pokemon);
-
-          const abilitiesList = pokemon?.abilities.map((a) => a.ability.name);
-          if (abilitiesList) setAbilities(abilitiesList);
-
-          const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`;
-          Image.getSize(imageUrl, (width, height) => {
-            setImageSize({ width, height });
-          });
-        }
+      if (!pokemon) {
+        throw new Error("Pokemon not found.");
       }
+
+      setSelectedPokemon(pokemon);
+
+      const abilitiesList = pokemon?.abilities.map((a) => a.ability.name);
+      if (abilitiesList) setAbilities(abilitiesList);
+
+      const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`;
+      Image.getSize(imageUrl, (width, height) => {
+        setImageSize({ width, height });
+      });
     } catch (error) {
       console.error("Error fetching Pokémons:", error);
+      handleBack();
     }
   };
 
-  const { evolutions, loading, error } = useFetchEvolutions(Number(id));
+  const { evolutions, isLoading, error } = useFetchEvolutions(Number(id));
 
   useEffect(() => {
     fetchSelectedPokemon();
-    setSelectedPokemon(useFetchPokemonDetails(selectedPokemon!));
+
+    if (selectedPokemon) {
+      setSelectedPokemon(useFetchPokemonDetails(selectedPokemon));
+    }
     setStatusBarHeight(StatusBar.currentHeight ? StatusBar.currentHeight : 30);
   }, [id]);
 
@@ -191,7 +196,7 @@ const DetailsScreen = () => {
         <View style={styles.evolutionContainer}>
           <Text style={styles.evolutionText}>Evoluções</Text>
           <View style={styles.evolutionCard}>
-            {loading ? (
+            {isLoading ? (
               <Text>Carregando evoluções...</Text>
             ) : error ? (
               <Text>Erro ao carregar evoluções.</Text>

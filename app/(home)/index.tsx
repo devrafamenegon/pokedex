@@ -6,16 +6,16 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { types } from "@/utils/types/colors";
 import OrderBottomSheet from "@/components/bottom-sheet/OrderBottomSheet";
 import TypeBottomSheet from "@/components/bottom-sheet/TypeBottomSheet";
-import useFetchPokemons from "@/hooks/useFetchPokemons";
 import FilterButton from "@/components/FilterButton";
 import { orderPokemonList } from "@/utils/order";
 import PokemonList from "@/components/PokemonList";
 import { filterPokemonList } from "@/utils/filter";
 import { Order } from "@/enums/order";
+import { usePokemon } from "@/contexts/pokemon";
 
 const HomeScreen = () => {
   const { allPokemonList, isLoading, loadMorePokemons, setOrder } =
-    useFetchPokemons();
+    usePokemon();
 
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
 
