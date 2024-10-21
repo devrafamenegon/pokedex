@@ -4,7 +4,7 @@ import { getPokemonEvolutionDetails } from "@/services/evolution";
 
 const useFetchEvolutions = (speciesId: number) => {
   const [evolutions, setEvolutions] = useState<Evolution[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
