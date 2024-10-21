@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   image: {
-    width: "90%",
-    height: "90%",
+    width: "70%",
+    height: "70%",
     resizeMode: "contain",
     display: "flex",
     alignSelf: "center",
