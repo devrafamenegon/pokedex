@@ -27,7 +27,7 @@ const useFetchEvolutions = (speciesId: number) => {
     fetchEvolutions();
   }, [speciesId]);
 
-  return { evolutions, isLoading, error };
+  return { evolutions, isLoadingEvolutions: isLoading, error };
 };
 
 export default useFetchEvolutions;
