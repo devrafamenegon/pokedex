@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View } from "react-native"
-import WeightIcon from "./icon/weight";
+import { StyleSheet, Text, View } from "react-native";
 import { capitalizeFirstLetter } from "@/utils/string";
-import HeightIcon from "./icon/height";
-import CategoryIcon from "./icon/category";
-import HabilityIcon from "./icon/hability";
+import WeightIcon from "@/components/icon/weight";
+import HeightIcon from "@/components/icon/height";
+import CategoryIcon from "@/components/icon/category";
+import HabilityIcon from "@/components/icon/hability";
 
 interface PokemonInfoBadgeProps {
-  label: string,
-  value: string | string[],
-  type: 'weight' | 'height' | 'category' | 'hability'
+  label: string;
+  value: string | string[];
+  type: "weight" | "height" | "category" | "hability";
 }
 
 const iconMap: { [key: string]: React.ReactNode } = {
@@ -21,7 +21,7 @@ const iconMap: { [key: string]: React.ReactNode } = {
 const PokemonInfoBadge: React.FC<PokemonInfoBadgeProps> = ({
   label,
   value,
-  type
+  type,
 }) => {
   return (
     <View style={styles.container}>
@@ -30,40 +30,44 @@ const PokemonInfoBadge: React.FC<PokemonInfoBadgeProps> = ({
         <Text style={styles.label}>{label}</Text>
       </View>
       <View style={styles.valueContainer}>
-        {typeof value === 'string' ? (
+        {typeof value === "string" ? (
           <Text style={styles.value}>{capitalizeFirstLetter(value)}</Text>
         ) : (
-          value.map((v, index) => <Text style={styles.value} key={index}>{capitalizeFirstLetter(v)}</Text>) 
+          value.map((v, index) => (
+            <Text style={styles.value} key={index}>
+              {capitalizeFirstLetter(v)}
+            </Text>
+          ))
         )}
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   labelContainer: {
-    flexDirection: 'row',
-    gap: 6
+    flexDirection: "row",
+    gap: 6,
   },
   label: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
     fontSize: 12,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   valueContainer: {
     padding: 8,
     borderWidth: 1,
     borderRadius: 15,
-    borderColor: '#e6e6e6'
+    borderColor: "#e6e6e6",
   },
   value: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: "Poppins-Medium",
     fontSize: 18,
-    textAlign: 'center',
-  }
+    textAlign: "center",
+  },
 });
 
 export default PokemonInfoBadge;

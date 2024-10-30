@@ -25,7 +25,7 @@ export function OTPInput({
   config, // Receive the configuration object as a prop
 }: OTPInputProps) {
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  
+
   const styles = StyleSheet.create({
     container: {
       flexDirection: "row",
@@ -49,7 +49,7 @@ export function OTPInput({
     },
     focusedInput: {
       borderColor: config.focusColor,
-    }
+    },
   });
 
   const handleFocus = (index: number) => setFocusedIndex(index);
@@ -60,18 +60,18 @@ export function OTPInput({
       {codes.map((code, index) => (
         <TextInput
           key={index}
-          cursorColor='#000'
+          cursorColor="#000"
           autoComplete="one-time-code"
           enterKeyHint="next"
           style={[
-            styles.input, 
+            styles.input,
             errorMessages && styles.errorInput,
             focusedIndex === index && styles.focusedInput,
           ]}
           inputMode="numeric"
           onChangeText={(text) => onChangeCode(text, index)}
           value={code}
-          onFocus={()=> handleFocus(index)}
+          onFocus={() => handleFocus(index)}
           onBlur={handleBlur}
           maxLength={index === 0 ? codes.length : 1}
           ref={refs[index]}

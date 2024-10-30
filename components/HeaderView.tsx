@@ -1,21 +1,16 @@
 import { useRouter } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import BackArrowIcon from "@/components/icon/back-arrow";
 
 interface HeaderProps {
-  headerTitle: string,
-  children: any
+  headerTitle: string;
+  children: any;
 }
 
-const HeaderView: React.FC<HeaderProps> = ({ 
-  headerTitle, 
-  children 
-}) => {
-  const router = useRouter();
+const HeaderView: React.FC<HeaderProps> = ({ headerTitle, children }) => {
+  const { dismiss } = useRouter();
 
-  const handleBack = () => {
-    router.dismiss();
-  };
+  const handleBack = () => dismiss();
 
   return (
     <View style={styles.container}>
@@ -25,45 +20,43 @@ const HeaderView: React.FC<HeaderProps> = ({
         </Pressable>
         <Text style={styles.header}>{headerTitle}</Text>
       </View>
-      <View style={styles.contentContainer}>
-        {children}
-      </View>
+      <View style={styles.contentContainer}>{children}</View>
     </View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: 'flex',
+    display: "flex",
     paddingVertical: 40,
     paddingHorizontal: 16,
-    backgroundColor: '#FFF'
+    backgroundColor: "#FFF",
   },
   headerContainer: {
     height: 38,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   backArrow: {
     flex: 1,
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     padding: 32,
     margin: -32,
-    zIndex: 1
+    zIndex: 1,
   },
   header: {
     flex: 1,
-    textAlign: 'center',
-    fontFamily: 'Poppins-SemiBold',
+    textAlign: "center",
+    fontFamily: "Poppins-SemiBold",
     fontSize: 18,
   },
   contentContainer: {
-    flex: 1,   
-  }
+    flex: 1,
+  },
 });
 
 export default HeaderView;

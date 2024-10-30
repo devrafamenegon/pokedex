@@ -1,10 +1,11 @@
 import { Pokemon } from "@/types/pokemon";
 import { getTypeColor } from "@/utils/types/colors";
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { getTypeGradientIcon } from "@/utils/types/gradient";
 import { formatPokemonNumber } from "@/utils/string";
-import PokemonTypeBadge from "./PokemonTypeBadge";
+import PokemonTypeBadge from "@/components/badge/PokemonTypeBadge";
+import PokemonImage from "./PokemonImage";
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -37,12 +38,9 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
         ]}
       >
         <IconComponent style={styles.imageBackgroundIcon} />
-        <Image
-          source={{
-            uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`,
-          }}
-          style={styles.image}
-        />
+        <View style={styles.pokemonImageContainer}>
+          <PokemonImage id={id.toString()} maxSize={75} />
+        </View>
       </View>
     </View>
   );
@@ -101,11 +99,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 15,
   },
-  image: {
-    width: "70%",
-    height: "70%",
-    resizeMode: "contain",
-    display: "flex",
+  pokemonImageContainer: {
     alignSelf: "center",
   },
   imageBackgroundIcon: {

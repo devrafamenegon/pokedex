@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
-import MaleIcon from "./icon/male";
-import FemaleIcon from "./icon/female";
 import GenderlessBar from "./GenderLessBar";
+import MaleIcon from "@/components/icon/male";
+import FemaleIcon from "@/components/icon/female";
 
 interface GenderBarProps {
   rate: number;
@@ -15,7 +15,9 @@ const GenderBar: React.FC<GenderBarProps> = ({ rate }) => {
       <Text style={styles.title}>Gênero</Text>
       {hasGender ? (
         <View style={styles.bar}>
-          <View style={[styles.fill, { width: `${100 - rate * 12.5}%`}]}></View>
+          <View
+            style={[styles.fill, { width: `${100 - rate * 12.5}%` }]}
+          ></View>
         </View>
       ) : (
         <GenderlessBar />
@@ -35,53 +37,53 @@ const GenderBar: React.FC<GenderBarProps> = ({ rate }) => {
         ) : (
           <Text style={styles.unknownText}>Desconhecido</Text>
         )}
-      </View> 
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   title: {
-    textAlign: 'center',
-    fontFamily: 'Poppins-Regular',
+    textAlign: "center",
+    fontFamily: "Poppins-Regular",
     fontSize: 12,
-    textTransform: 'uppercase',
-    marginBottom: 8
+    textTransform: "uppercase",
+    marginBottom: 8,
   },
   bar: {
     flex: 1,
     minHeight: 8,
-    backgroundColor: '#FF7596',
-    borderRadius: 999
+    backgroundColor: "#FF7596",
+    borderRadius: 999,
   },
   fill: {
     flex: 1,
     minHeight: 8,
-    backgroundColor: '#2551C3',
-    borderRadius: 999
+    backgroundColor: "#2551C3",
+    borderRadius: 999,
   },
   footerContainer: {
     marginTop: 6,
   },
   footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   genderRate: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
     fontSize: 12,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   percentageContainer: {
-    flexDirection: 'row',
-    gap: 3
+    flexDirection: "row",
+    gap: 3,
   },
   unknownText: {
-    textAlign: 'center',
-    fontFamily: 'Poppins-Medium',
+    textAlign: "center",
+    fontFamily: "Poppins-Medium",
     fontSize: 12,
   },
 });

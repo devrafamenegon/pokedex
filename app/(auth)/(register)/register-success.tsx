@@ -1,4 +1,4 @@
-import { CTAButton } from "@/components/CTAButton";
+import { CTAButton } from "@/components/button/CTAButton";
 import CheckIcon from "@/components/icon/check";
 import { useRouter } from "expo-router";
 import { Image, StyleSheet, Text, View } from "react-native";
@@ -7,59 +7,64 @@ const RegisterSuccess = () => {
   const router = useRouter();
 
   const handleContinue = () => {
-    router.push('/(home)')
-  }
+    router.push("/(home)");
+  };
 
   return (
     <View style={styles.screen}>
       <CheckIcon />
       <View style={styles.container}>
-        <Image source={require('@/assets/images/trainers/duo_3.png')} style={styles.image} />
+        <Image
+          source={require("@/assets/images/trainers/duo_3.png")}
+          style={styles.image}
+        />
         <View style={styles.textContainer}>
           <Text style={styles.title}>Sua conta foi criada com Sucesso!</Text>
-          <Text style={styles.subtitle}>Seja bem-vindo, treinador! Estamos animados para acompanhar sua jornada.</Text>
+          <Text style={styles.subtitle}>
+            Seja bem-vindo, treinador! Estamos animados para acompanhar sua
+            jornada.
+          </Text>
         </View>
-        <CTAButton title="Continuar" onPress={handleContinue}/>
+        <CTAButton title="Continuar" onPress={handleContinue} />
       </View>
     </View>
-    
-  )
+  );
 };
 
 const styles = StyleSheet.create({
   screen: {
     paddingTop: 40,
-    flex: 1
+    flex: 1,
   },
   container: {
     flex: 1,
-    display: 'flex',
-    justifyContent: 'flex-end',
+    display: "flex",
+    justifyContent: "flex-end",
     paddingHorizontal: 16,
     paddingBottom: 40,
-    backgroundColor: '#fff'
+    backgroundColor: "#fff",
   },
   image: {
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   textContainer: {
-    display: 'flex',
+    display: "flex",
     gap: 16,
-    marginBottom: 32
+    marginBottom: 32,
   },
   title: {
-    textAlign: 'center',
-    fontFamily: 'Poppins-Medium',
+    textAlign: "center",
+    fontFamily: "Poppins-Medium",
     fontSize: 26,
   },
   subtitle: {
-    textAlign: 'center',
-    fontFamily: 'Poppins-Regular',
+    textAlign: "center",
+    fontFamily: "Poppins-Regular",
     fontSize: 14,
     lineHeight: 21,
-    color: '#666666',
-    paddingHorizontal: 8
+    color: "#666666",
+    paddingHorizontal: 8,
   },
-})
+});
 
 export default RegisterSuccess;

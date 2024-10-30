@@ -1,8 +1,8 @@
-import { CTAButton } from "@/components/CTAButton";
 import { useRouter } from "expo-router";
-import { Image, StyleSheet, Text, View } from "react-native"
-import { CTAIconButton } from "@/components/CTAIconButton";
+import { Image, StyleSheet, Text, View } from "react-native";
 import HeaderView from "@/components/HeaderView";
+import { CTAIconButton } from "@/components/button/CTAIconButton";
+import { CTAButton } from "@/components/button/CTAButton";
 
 const RegisterScreen = () => {
   const router = useRouter();
@@ -16,57 +16,74 @@ const RegisterScreen = () => {
   };
 
   const handleRegisterWithEmail = () => {
-    router.push('/register-with-email');
+    router.push("/register-with-email");
   };
 
   return (
-    <HeaderView headerTitle='Criar conta'>
+    <HeaderView headerTitle="Criar conta">
       <View style={styles.contentContainer}>
-        <Image source={require('@/assets/images/trainers/6.png')} style={styles.image} />
+        <Image
+          source={require("@/assets/images/trainers/6.png")}
+          style={styles.image}
+        />
         <View style={styles.textContainer}>
-          <Text style={styles.title}>Falta pouco para explorar esse mundo!</Text>
+          <Text style={styles.title}>
+            Falta pouco para explorar esse mundo!
+          </Text>
           <Text style={styles.subtitle}>Como deseja se conectar?</Text>
         </View>
         <View style={styles.buttonContainer}>
-          <CTAIconButton title="Continuar com a Apple" logo='logo-apple' onPress={handleRegisterWithApple}/>
-          <CTAIconButton title="Continuar com o Google" logo='logo-google' onPress={handleRegisterWithGoogle}/>
-          <CTAButton title="Continuar com um e-mail" type='default' onPress={handleRegisterWithEmail}/>
+          <CTAIconButton
+            title="Continuar com a Apple"
+            logo="logo-apple"
+            onPress={handleRegisterWithApple}
+          />
+          <CTAIconButton
+            title="Continuar com o Google"
+            logo="logo-google"
+            onPress={handleRegisterWithGoogle}
+          />
+          <CTAButton
+            title="Continuar com um e-mail"
+            type="default"
+            onPress={handleRegisterWithEmail}
+          />
         </View>
       </View>
     </HeaderView>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    justifyContent: 'flex-end',   
+    justifyContent: "flex-end",
   },
   image: {
-    alignSelf: 'center'
+    alignSelf: "center",
   },
   textContainer: {
-    display: 'flex',
+    display: "flex",
     gap: 16,
-    marginTop: 8
+    marginTop: 8,
   },
   title: {
-    textAlign: 'center',
-    fontFamily: 'Poppins-Medium',
+    textAlign: "center",
+    fontFamily: "Poppins-Medium",
     fontSize: 26,
   },
   subtitle: {
-    textAlign: 'center',
-    fontFamily: 'Poppins-Regular',
+    textAlign: "center",
+    fontFamily: "Poppins-Regular",
     fontSize: 14,
     lineHeight: 21,
-    color: '#666666'
+    color: "#666666",
   },
   buttonContainer: {
-    display: 'flex',
+    display: "flex",
     gap: 12,
-    marginTop: 32
-  }
+    marginTop: 32,
+  },
 });
 
 export default RegisterScreen;

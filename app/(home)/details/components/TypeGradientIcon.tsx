@@ -1,5 +1,5 @@
-import { PokemonType } from '@/types/pokemon';
-import { getTypeGradientIcon } from '@/utils/types/gradient';
+import { PokemonType } from "@/types/pokemon";
+import { getTypeGradientIcon } from "@/utils/types/gradient";
 
 interface TypeGradientIconProps {
   type: PokemonType;
@@ -13,9 +13,7 @@ const TypeGradientIcon = ({ type, size = 50 }: TypeGradientIconProps) => {
     return null;
   }
 
-  return (
-    <IconComponent width={size} height={size} />
-  );
+  return <IconComponent width={size} height={size} />;
 };
 
 export default TypeGradientIcon;

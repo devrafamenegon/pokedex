@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { useRouter } from 'expo-router';
-import HeaderView from '@/components/HeaderView';
-import { CTAButton } from '@/components/CTAButton';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import CustomTextInput from '@/components/CustomTextInput';
-import { useSignIn } from '@clerk/clerk-expo';
+import React, { useState } from "react";
+import { useRouter } from "expo-router";
+import HeaderView from "@/components/HeaderView";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useSignIn } from "@clerk/clerk-expo";
+import CustomTextInput from "@/components/input/CustomTextInput";
+import { CTAButton } from "@/components/button/CTAButton";
 
 const LoginWithEmailScreen = () => {
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(''); // Novo estado para mensagem de erro
+  const [errorMessage, setErrorMessage] = useState(""); // Novo estado para mensagem de erro
 
   const handleSubmit = async (email: string, password: string) => {
     if (!isLoaded) {
@@ -21,7 +21,7 @@ const LoginWithEmailScreen = () => {
     }
 
     setIsLoading(true);
-    setErrorMessage('');
+    setErrorMessage("");
 
     try {
       const completeSignIn = await signIn.create({
@@ -31,13 +31,13 @@ const LoginWithEmailScreen = () => {
 
       await setActive({ session: completeSignIn.createdSessionId });
 
-      router.push('/login-load');
+      router.push("/login-load");
     } catch (err: any) {
       const error = err?.errors?.[0];
       if (error) {
         setErrorMessage(error.message);
       } else {
-        setErrorMessage('Algo deu errado. Tente novamente.');
+        setErrorMessage("Algo deu errado. Tente novamente.");
       }
       console.error(JSON.stringify(err, null, 2));
     } finally {
@@ -46,13 +46,13 @@ const LoginWithEmailScreen = () => {
   };
 
   const handleForgot = () => {
-    router.push('/forgot-password');
+    router.push("/forgot-password");
   };
 
-  const isValid = () => email.includes('@') && password.length >= 8;
+  const isValid = () => email.includes("@") && password.length >= 8;
 
   return (
-    <HeaderView headerTitle='Entrar'>
+    <HeaderView headerTitle="Entrar">
       <View style={styles.contentContainer}>
         <View style={styles.textContainer}>
           <Text style={styles.firstText}>Bem vindo de volta!</Text>
@@ -61,18 +61,18 @@ const LoginWithEmailScreen = () => {
         <View style={styles.inputContainer}>
           <View style={styles.input}>
             <Text style={styles.label}>E-mail</Text>
-            <CustomTextInput 
-              placeholder='E-mail' 
-              value={email} 
+            <CustomTextInput
+              placeholder="E-mail"
+              value={email}
               onChangeText={setEmail}
               secureTextEntry={false}
             />
           </View>
           <View style={styles.input}>
             <Text style={styles.label}>Senha</Text>
-            <CustomTextInput 
-              placeholder='Senha'
-              value={password} 
+            <CustomTextInput
+              placeholder="Senha"
+              value={password}
               onChangeText={setPassword}
               secureTextEntry={true}
             />
@@ -87,9 +87,9 @@ const LoginWithEmailScreen = () => {
           </Pressable>
         </View>
         <View style={styles.buttonContainer}>
-          <CTAButton 
-            title='Entrar'
-            type={isValid() ? 'default' : 'deactivate'}
+          <CTAButton
+            title="Entrar"
+            type={isValid() ? "default" : "deactivate"}
             onPress={() => handleSubmit(email, password)}
             disabled={isLoading}
           />
@@ -102,58 +102,58 @@ const LoginWithEmailScreen = () => {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    justifyContent: 'flex-start',   
+    justifyContent: "flex-start",
   },
   textContainer: {
-    display: 'flex',
+    display: "flex",
     marginTop: 40,
-    alignItems: 'center',
-    textAlign: 'center'
+    alignItems: "center",
+    textAlign: "center",
   },
   firstText: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
     fontSize: 26,
-    color: '#4D4D4D',
-    textAlign: 'center'
+    color: "#4D4D4D",
+    textAlign: "center",
   },
   secondText: {
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: "Poppins-SemiBold",
     fontSize: 26,
-    color: '#000',
-    textAlign: 'center'
+    color: "#000",
+    textAlign: "center",
   },
   inputContainer: {
-    display: 'flex',
+    display: "flex",
     gap: 16,
     marginVertical: 24,
   },
   input: {
-    display: 'flex',
-    gap: 8
+    display: "flex",
+    gap: 8,
   },
   label: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: "Poppins-Medium",
     fontSize: 14,
-    color: '#000',
+    color: "#000",
   },
   forgotText: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: "Poppins-Medium",
     fontSize: 14,
-    color: '#173EA5',
-    textAlign: 'center',
-    padding: 8
+    color: "#173EA5",
+    textAlign: "center",
+    padding: 8,
   },
   buttonContainer: {
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end",
   },
   errorText: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: "Poppins-Medium",
     fontSize: 14,
-    color: '#FF0000',
-    textAlign: 'center',
+    color: "#FF0000",
+    textAlign: "center",
     marginTop: 16,
-  }
+  },
 });
 
 export default LoginWithEmailScreen;

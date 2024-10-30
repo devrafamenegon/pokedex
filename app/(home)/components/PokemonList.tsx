@@ -1,10 +1,4 @@
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import PokemonCardSkeleton from "./PokemonCardSkeleton";
 import { Pokemon } from "@/types/pokemon";
 import PokemonCard from "./PokemonCard";
