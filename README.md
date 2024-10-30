@@ -4,29 +4,25 @@ Este projeto é uma Pokédex interativa, permitindo que os usuários explorem e 
 
 ## Status do Projeto
 
-🚧 **Em construção** 🚧
-
-## Sobre o Projeto
-
-Este aplicativo foi desenvolvido com o objetivo de fornecer uma experiência completa para os fãs de Pokémon, apresentando informações detalhadas e filtradas sobre cada Pokémon disponível na PokéAPI.
+### 🚧 **Em construção** 🚧
 
 ## Design do Projeto
 
 O design do aplicativo pode ser visualizado diretamente no Figma:
 [Link para o design no Figma](https://www.figma.com/community/file/1202971127473077147)
 
-### Preview do Design
+## Tela de detalhes do Pokémon
 
-Abaixo estão algumas telas principais do aplicativo:
+![Preview da Tela de Pokémon](./github/Pokemon.png)
 
-- **Tela de Cadastro**
-  ![Preview da Tela de Cadastro](./github/Cadastro.png)
+## Tela inicial
 
-- **Tela de Login**
-  ![Preview da Tela de Login](./github/Login.png)
+![Preview da Tela Inicial](./github/Home.png)
 
-- **Tela Inicial**
-  ![Preview da Tela Inicial](./github/Home.png)
+## Tela de Onboard
 
-- **Tela de Detalhes do Pokémon**
-  ![Preview da Tela de Pokémon](./github/Pokemon.png)
+![Preview da Tela de Cadastro](./github/Cadastro.png)
+
+## Tela de Login
+
+![Preview da Tela de Login](./github/Login.png)
