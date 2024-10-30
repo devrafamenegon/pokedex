@@ -2,7 +2,14 @@ import { Pokemon, PokemonType } from "@/types/pokemon";
 
 const POKEMON_API_URL = process.env.EXPO_PUBLIC_POKEMON_API_URL;
 
-export const fetchSpecies = async (id: number) => {
+export interface SpeciesResponseDto {
+  capture_rate: number;
+  gender_rate: number;
+  flavor_text: string;
+  genus: string;
+}
+
+export const fetchSpecies = async (id: number): Promise<SpeciesResponseDto> => {
   const res = await fetch(`${POKEMON_API_URL}/pokemon-species/${id}`);
 
   const { capture_rate, gender_rate, flavor_text_entries, genera } =
@@ -28,7 +35,14 @@ interface DamageRelationsDto {
   no_damage_to: TypeDto[];
 }
 
-export const fetchDamageRelations = async (types: string[]) => {
+export interface DamageRelationsResponseDto {
+  double_damage_from: PokemonType[];
+  double_damage_to: PokemonType[];
+}
+
+export const fetchDamageRelations = async (
+  types: string[]
+): Promise<DamageRelationsResponseDto> => {
   const damageRelationsPromises = types.map(async (type) => {
     const res = await fetch(`${POKEMON_API_URL}/type/${type}`);
 
