@@ -21,7 +21,8 @@ Este projeto é uma Pokédex interativa, permitindo que os usuários explorem e 
 9. [Escalabilidade e Desempenho](#escalabilidade-e-desempenho)
 10. [Fluxo de Integração Contínua (CI/CD)](#fluxo-de-integração-contínua-cicd)
 11. [Monitoramento e Logs](#monitoramento-e-logs)
-12. [Anexos](#anexos)
+12. [Fluxo de Requisições e Armazenamento em Cache](#fluxo-de-requisições-e-armazenamento-em-cache)
+13. [Anexos](#anexos)
 
 ---
 
@@ -182,7 +183,52 @@ A documentação completa dos endpoints da PokeAPI pode ser acessada [aqui](http
 
 ---
 
-## 12. Anexos
+## 12. Fluxo de Requisições e Armazenamento em Cache
 
-- **Link do Prototipo:** [Figma](https://www.figma.com/community/file/1202971127473077147)
+O fluxo de requisições e o gerenciamento de cache no aplicativo foram planejados para oferecer uma experiência rápida e responsiva ao usuário, mesmo em situações de conectividade limitada. Este fluxo é responsável por realizar requisições à **PokeAPI**, processar os dados recebidos e armazená-los em cache para acessos futuros.
+
+### 1. **Fluxo de Requisições à PokeAPI**
+
+1.  **Acesso Inicial à PokeAPI:**
+
+    - Quando o usuário abre o aplicativo ou acessa a lista de pokémons pela primeira vez, é feita uma requisição à PokeAPI para buscar os dados básicos de todos os pokémons.
+
+2.  **Requisição de Detalhes do Pokémon:**
+
+    - Ao selecionar um pokémon, o aplicativo faz uma requisição de detalhes para obter habilidades, estatísticas e evoluções.
+
+3.  **Aplicação de Filtros:**
+    - Requisições são feitas para listar pokémons de tipos específicos. Se já requisitados, os dados são retornados do cache.
+
+### 2. **Armazenamento em Cache**
+
+O armazenamento em cache usa **AsyncStorage** para melhorar a performance e possibilitar navegação offline.
+
+#### Estrutura de Cache
+
+1. **Dados Básicos:** Lista de pokémons é salva com a chave `pokemonListCache`.
+2. **Dados Detalhados:** Detalhes individuais são armazenados com chave `pokemonDetailCache_{id}`.
+3. **Dados de Filtros:** Lista filtrada de pokémons é salva com chave `pokemonTypeCache_{type}`.
+
+#### Mecanismo de Expiração do Cache
+
+- Cada entrada de cache contém um timestamp, e entradas são atualizadas a cada 24 horas para evitar desatualização dos dados.
+
+### Resumo do Armazenamento em Cache
+
+```plaintext
+[Cache Local (AsyncStorage)]
+      |
+      |- Lista de Pokémons (pokemonListCache)
+      |- Detalhes do Pokémon (pokemonDetailCache_{id})
+      |- Filtros de Tipo (pokemonTypeCache_{type})
+```
+
+---
+
+## 13. Anexos
+
+- **Link do Protótipo:** [Figma](https://www.figma.com/community/file/1202971127473077147)
 - **Documentação Completa PokeAPI:** [Documentação PokeAPI](https://pokeapi.co/docs/v2)
+
+---
