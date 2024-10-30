@@ -20,9 +20,8 @@ Este projeto é uma Pokédex interativa, permitindo que os usuários explorem e 
 8. [Documentação de APIs](#documentação-de-apis)
 9. [Escalabilidade e Desempenho](#escalabilidade-e-desempenho)
 10. [Fluxo de Integração Contínua (CI/CD)](#fluxo-de-integração-contínua-cicd)
-11. [Monitoramento e Logs](#monitoramento-e-logs)
-12. [Fluxo de Requisições e Armazenamento em Cache](#fluxo-de-requisições-e-armazenamento-em-cache)
-13. [Anexos](#anexos)
+11. [Fluxo de Requisições e Armazenamento em Cache](#fluxo-de-requisições-e-armazenamento-em-cache)
+12. [Anexos](#anexos)
 
 ---
 
@@ -183,7 +182,7 @@ A documentação completa dos endpoints da PokeAPI pode ser acessada [aqui](http
 
 ---
 
-## 12. Fluxo de Requisições e Armazenamento em Cache
+## 11. Fluxo de Requisições e Armazenamento em Cache
 
 O fluxo de requisições e o gerenciamento de cache no aplicativo foram planejados para oferecer uma experiência rápida e responsiva ao usuário, mesmo em situações de conectividade limitada. Este fluxo é responsável por realizar requisições à **PokeAPI**, processar os dados recebidos e armazená-los em cache para acessos futuros.
 
@@ -226,7 +225,7 @@ O armazenamento em cache usa **AsyncStorage** para melhorar a performance e poss
 
 ---
 
-## 13. Anexos
+## 12. Anexos
 
 - **Link do Protótipo:** [Figma](https://www.figma.com/community/file/1202971127473077147)
 - **Documentação Completa PokeAPI:** [Documentação PokeAPI](https://pokeapi.co/docs/v2)
