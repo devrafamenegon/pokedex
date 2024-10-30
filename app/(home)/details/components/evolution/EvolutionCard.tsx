@@ -1,17 +1,17 @@
 import { PokemonType } from "@/types/pokemon";
 import { formatPokemonNumber } from "@/utils/string";
 import { Image, StyleSheet, Text, View } from "react-native";
-import PokemonTypeBadge from "./PokemonTypeBadge";
 import { getTypeColor } from "@/utils/types/colors";
-import TypeGradientIcon from "./TypeGradientIcon";
+import PokemonTypeBadge from "@/components/badge/PokemonTypeBadge";
+import TypeGradientIcon from "../TypeGradientIcon";
 
-interface EvolutionCardPros {
+interface EvolutionCardProps {
   id: number;
   name: string;
   types: PokemonType[];
 }
 
-const EvolutionCard: React.FC<EvolutionCardPros> = ({ id, name, types }) => {
+const EvolutionCard: React.FC<EvolutionCardProps> = ({ id, name, types }) => {
   return (
     <View style={styles.container}>
       <View

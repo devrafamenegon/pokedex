@@ -1,6 +1,6 @@
-import React from 'react';
-import ContentLoader, { Circle, Rect } from 'react-content-loader/native';
-import { View, StyleSheet } from 'react-native';
+import React from "react";
+import ContentLoader, { Circle, Rect } from "react-content-loader/native";
+import { View, StyleSheet } from "react-native";
 
 const PokemonCardSkeleton: React.FC = () => {
   return (
@@ -15,7 +15,7 @@ const PokemonCardSkeleton: React.FC = () => {
         >
           {/* Skeleton for Pokemon number */}
           <Rect x="0" y="5" rx="4" ry="4" width="60" height="12" />
-          
+
           {/* Skeleton for Pokemon name */}
           <Rect x="0" y="25" rx="4" ry="4" width="120" height="18" />
 
@@ -43,13 +43,13 @@ const PokemonCardSkeleton: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     borderRadius: 15,
     marginBottom: 10,
-    alignItems: 'center',
-    backgroundColor: '#e0e0e0'
+    alignItems: "center",
+    backgroundColor: "#e0e0e0",
   },
   infoContainer: {
     flex: 4 / 6,
@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 2 / 6,
     height: 100,
-    justifyContent: 'center',
+    justifyContent: "center",
     borderRadius: 15,
-    backgroundColor: '#f0f0f0',
-    marginRight: 16
+    backgroundColor: "#f0f0f0",
+    marginRight: 16,
   },
 });
 

@@ -1,50 +1,32 @@
-# Welcome to your Expo app 👋
+# Pokédex
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Este projeto é uma Pokédex interativa, permitindo que os usuários explorem e visualizem detalhes sobre diferentes espécies de Pokémon. O design está disponível no Figma e o desenvolvimento está em andamento.
 
-## Get started
+## Status do Projeto
 
-1. Install dependencies
+🚧 **Em construção** 🚧
 
-   ```bash
-   npm install
-   ```
+## Sobre o Projeto
 
-2. Start the app
+Este aplicativo foi desenvolvido com o objetivo de fornecer uma experiência completa para os fãs de Pokémon, apresentando informações detalhadas e filtradas sobre cada Pokémon disponível na PokéAPI.
 
-   ```bash
-    npx expo start
-   ```
+## Design do Projeto
 
-In the output, you'll find options to open the app in a
+O design do aplicativo pode ser visualizado diretamente no Figma:
+[Link para o design no Figma](https://www.figma.com/community/file/1202971127473077147)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Preview do Design
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Abaixo estão algumas telas principais do aplicativo:
 
-## Get a fresh project
+- **Tela de Cadastro**
+  ![Preview da Tela de Cadastro](./github/Cadastro.png)
 
-When you're ready, run:
+- **Tela de Login**
+  ![Preview da Tela de Login](./github/Login.png)
 
-```bash
-npm run reset-project
-```
+- **Tela Inicial**
+  ![Preview da Tela Inicial](./github/Home.png)
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **Tela de Detalhes do Pokémon**
+  ![Preview da Tela de Pokémon](./github/Pokemon.png)

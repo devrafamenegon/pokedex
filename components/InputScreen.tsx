@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { InputModeOptions, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { InputModeOptions, StyleSheet, Text, View } from "react-native";
 import HeaderView from "@/components/HeaderView";
-import CustomTextInput from "@/components/CustomTextInput";
-import { CTAButton } from "@/components/CTAButton";
+import CustomTextInput from "./input/CustomTextInput";
+import { CTAButton } from "./button/CTAButton";
 
 interface InputScreenProps {
   headerTitle: string;
@@ -13,10 +13,10 @@ interface InputScreenProps {
   onSubmit: (value: string) => void;
   tipText?: string;
   secureTextEntry?: boolean;
-  autoCapitalize?: 'none' | 'words' | 'sentences' | 'characters',
-  inputMode?: InputModeOptions,
-  validate?: (value: string) => boolean,
-  isLoading?: boolean
+  autoCapitalize?: "none" | "words" | "sentences" | "characters";
+  inputMode?: InputModeOptions;
+  validate?: (value: string) => boolean;
+  isLoading?: boolean;
 }
 
 const InputScreen: React.FC<InputScreenProps> = ({
@@ -29,11 +29,11 @@ const InputScreen: React.FC<InputScreenProps> = ({
   onSubmit,
   secureTextEntry = false,
   validate = () => true,
-  autoCapitalize = 'none',
-  inputMode = 'text',
-  isLoading = false
+  autoCapitalize = "none",
+  inputMode = "text",
+  isLoading = false,
 }) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
 
   const isValid = validate(value);
 
@@ -50,21 +50,19 @@ const InputScreen: React.FC<InputScreenProps> = ({
           <Text style={styles.firstText}>{title}</Text>
           <Text style={styles.secondText}>{subtitle}</Text>
         </View>
-        <CustomTextInput 
-          placeholder={placeholder} 
-          value={value} 
+        <CustomTextInput
+          placeholder={placeholder}
+          value={value}
           onChangeText={setValue}
           secureTextEntry={secureTextEntry}
           autoCapitalize={autoCapitalize}
           inputMode={inputMode}
         />
-        {tipText && (
-          <Text style={styles.tipText}>{tipText}</Text>
-        )}
+        {tipText && <Text style={styles.tipText}>{tipText}</Text>}
         <View style={styles.buttonContainer}>
-          <CTAButton 
+          <CTAButton
             title={buttonText}
-            type={!isValid ? 'deactivate' : 'default'}
+            type={!isValid ? "deactivate" : "default"}
             onPress={handleContinue}
             disabled={isLoading}
           />
@@ -77,38 +75,38 @@ const InputScreen: React.FC<InputScreenProps> = ({
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    justifyContent: 'flex-start',   
+    justifyContent: "flex-start",
   },
   textContainer: {
-    display: 'flex',
+    display: "flex",
     marginTop: 40,
     marginBottom: 24,
-    alignItems: 'center',
-    textAlign: 'center'
+    alignItems: "center",
+    textAlign: "center",
   },
   firstText: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
     fontSize: 26,
-    color: '#4D4D4D',
-    textAlign: 'center'
+    color: "#4D4D4D",
+    textAlign: "center",
   },
   secondText: {
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: "Poppins-SemiBold",
     fontSize: 26,
-    color: '#000',
-    textAlign: 'center'
+    color: "#000",
+    textAlign: "center",
   },
   tipText: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
     fontSize: 12,
-    color: '#4D4D4D',
-    textAlign: 'center',
-    marginTop: 8
+    color: "#4D4D4D",
+    textAlign: "center",
+    marginTop: 8,
   },
   buttonContainer: {
     flex: 1,
-    justifyContent: 'flex-end'
-  }
+    justifyContent: "flex-end",
+  },
 });
 
 export default InputScreen;

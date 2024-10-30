@@ -6,13 +6,7 @@ const GenderlessBar = () => {
     <View style={styles.container}>
       {/* Diagonal Bars */}
       {[...Array(20)].map((_, index) => (
-        <View
-          key={index}
-          style={[
-            styles.diagonalBar,
-            { left: index * 26 },
-          ]}
-        />
+        <View key={index} style={[styles.diagonalBar, { left: index * 26 }]} />
       ))}
     </View>
   );
@@ -26,7 +20,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(0, 0, 0, 0.10)",
     position: "relative",
     overflow: "hidden",
-    borderRadius: 999
+    borderRadius: 999,
   },
   diagonalBar: {
     position: "absolute",
