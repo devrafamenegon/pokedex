@@ -182,14 +182,7 @@ A documentação completa dos endpoints da PokeAPI pode ser acessada [aqui](http
 
 ---
 
-## 11. Monitoramento e Logs
-
-**Ferramentas:** Kibana para monitoramento em produção  
-**Log de Erros:** Logs gerados para erros críticos, facilitando análise e resolução em produção.
-
----
-
 ## 12. Anexos
 
-- **Link do Prototipo:** [Invision/Figma](https://www.figma.com/community/file/1202971127473077147)
+- **Link do Prototipo:** [Figma](https://www.figma.com/community/file/1202971127473077147)
 - **Documentação Completa PokeAPI:** [Documentação PokeAPI](https://pokeapi.co/docs/v2)
