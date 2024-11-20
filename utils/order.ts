@@ -1,7 +1,7 @@
 import { Order } from "@/enums/order";
 import { Pokemon } from "@/types/pokemon";
 
-export const orderPokemonList = (list: Pokemon[], order: string) => {
+export const orderPokemonList = (list: Pokemon[], order: Order) => {
   switch (order) {
     case Order.NUMERICAL_ASC:
       list.sort((a, b) => a.id - b.id);
