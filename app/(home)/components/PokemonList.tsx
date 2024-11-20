@@ -3,22 +3,15 @@ import PokemonCardSkeleton from "./PokemonCardSkeleton";
 import { Pokemon } from "@/types/pokemon";
 import PokemonCard from "./PokemonCard";
 import { useRouter } from "expo-router";
-import { getLimit } from "@/utils/limit";
 import React, { useCallback } from "react";
 
 interface PokemonListProps {
   isLoading: boolean;
   data: Pokemon[];
-  onEndReached: () => void;
 }
 
-const PokemonList: React.FC<PokemonListProps> = ({
-  isLoading,
-  data,
-  onEndReached,
-}) => {
+const PokemonList: React.FC<PokemonListProps> = ({ isLoading, data }) => {
   const router = useRouter();
-  const limit = getLimit();
 
   const renderPokemonItem = useCallback(
     ({ item }: { item: Pokemon }) => (
@@ -32,7 +25,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
   const listFooterComponent = useCallback(() => {
     return (
       <FlatList
-        data={Array.from({ length: 2 })}
+        data={Array.from({ length: 10 })}
         renderItem={() => <PokemonCardSkeleton />}
         keyExtractor={(_, index) => index.toString()}
         showsVerticalScrollIndicator={false}
@@ -52,12 +45,10 @@ const PokemonList: React.FC<PokemonListProps> = ({
         renderItem={renderPokemonItem}
         keyExtractor={(item: Pokemon) => item.id.toString()}
         showsVerticalScrollIndicator={false}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={1}
-        initialNumToRender={limit}
-        maxToRenderPerBatch={limit}
+        initialNumToRender={20}
+        maxToRenderPerBatch={20}
         ListEmptyComponent={!isLoading ? listEmptyComponent : null}
-        ListFooterComponent={listFooterComponent}
+        ListFooterComponent={isLoading ? listFooterComponent : null}
       />
     </View>
   );

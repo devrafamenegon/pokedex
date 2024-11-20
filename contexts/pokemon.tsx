@@ -1,41 +1,29 @@
-// PokemonContext.tsx
 import React, { createContext, useContext, ReactNode } from "react";
 import { Pokemon } from "@/types/pokemon";
 import useFetchPokemons from "@/hooks/useFetchPokemons";
+import { Order } from "@/enums/order";
 
-// Tipagem do contexto
 interface PokemonContextData {
   allPokemonList: Pokemon[];
   isLoading: boolean;
-  setOrder: (order: "asc" | "desc") => void;
-  loadMorePokemons: () => void;
-  clearList: () => void;
+  order: Order;
+  setOrder: (order: Order) => void;
   error: string | null;
 }
 
-// Criando o contexto
 const PokemonContext = createContext<PokemonContextData | undefined>(undefined);
 
-// Provider para encapsular a aplicação
 export const PokemonProvider = ({ children }: { children: ReactNode }) => {
-  // Usando o hook aqui
-  const {
-    allPokemonList,
-    isLoading,
-    setOrder,
-    clearList,
-    loadMorePokemons,
-    error,
-  } = useFetchPokemons();
+  const { allPokemonList, order, setOrder, isLoading, error } =
+    useFetchPokemons();
 
   return (
     <PokemonContext.Provider
       value={{
         allPokemonList,
         isLoading,
+        order,
         setOrder,
-        loadMorePokemons,
-        clearList,
         error,
       }}
     >
@@ -44,7 +32,6 @@ export const PokemonProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Custom hook para acessar o contexto
 export const usePokemon = () => {
   const context = useContext(PokemonContext);
   if (!context) {

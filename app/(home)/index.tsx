@@ -8,19 +8,15 @@ import OrderBottomSheet from "@/components/bottom-sheet/OrderBottomSheet";
 import TypeBottomSheet from "@/components/bottom-sheet/TypeBottomSheet";
 import { orderPokemonList } from "@/utils/order";
 import { filterPokemonList } from "@/utils/filter";
-import { Order } from "@/enums/order";
 import { usePokemon } from "@/contexts/pokemon";
 import FilterButton from "@/components/button/FilterButton";
 import PokemonList from "./components/PokemonList";
 
 const HomeScreen = () => {
-  const { allPokemonList, isLoading, loadMorePokemons, setOrder } =
-    usePokemon();
+  const { allPokemonList, isLoading, order } = usePokemon();
 
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-
   const [selectedType, setSelectedType] = useState<string>("Todos os tipos");
-  const [selectedOrder, setSelectedOrder] = useState<string>("Menor número");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const typeSheetRef = useRef<BottomSheetModal>(null);
@@ -35,25 +31,18 @@ const HomeScreen = () => {
     orderSheetRef.current?.expand();
   };
 
-  const handleOrderChange = (newOrder: string) => {
-    setOrder(newOrder === Order.NUMERICAL_DESC ? "desc" : "asc");
-    setSelectedOrder(newOrder);
-  };
-
   useEffect(() => {
+    console.log("trocou de ordem", order);
     let filteredList: Pokemon[] = filterPokemonList(
       allPokemonList,
       selectedType,
       searchQuery
     );
 
-    const orderedList: Pokemon[] = orderPokemonList(
-      filteredList,
-      selectedOrder
-    );
+    const orderedList: Pokemon[] = orderPokemonList(filteredList, order);
 
     setPokemonList(orderedList);
-  }, [allPokemonList, selectedType, selectedOrder, searchQuery]);
+  }, [allPokemonList, selectedType, order, searchQuery]);
 
   return (
     <GestureHandlerRootView>
@@ -77,18 +66,14 @@ const HomeScreen = () => {
 
           <FilterButton
             variant="order"
-            text={selectedOrder}
+            text={order}
             onPress={handleOrderFilterPress}
           />
         </View>
 
         {/* Pokemon list */}
         <View style={styles.listContainer}>
-          <PokemonList
-            isLoading={isLoading}
-            data={pokemonList}
-            onEndReached={loadMorePokemons}
-          />
+          <PokemonList key={order} isLoading={isLoading} data={pokemonList} />
         </View>
       </SafeAreaView>
 
@@ -98,11 +83,7 @@ const HomeScreen = () => {
         setSelectedType={setSelectedType}
       />
 
-      <OrderBottomSheet
-        ref={orderSheetRef}
-        selectedOrder={selectedOrder}
-        setSelectedOrder={handleOrderChange}
-      />
+      <OrderBottomSheet ref={orderSheetRef} />
     </GestureHandlerRootView>
   );
 };

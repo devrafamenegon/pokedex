@@ -2,37 +2,32 @@ import React, { useMemo, forwardRef } from "react";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Order } from "@/enums/order";
+import { usePokemon } from "@/contexts/pokemon";
 
-interface OrderBottomSheetProps {
-  selectedOrder: string;
-  setSelectedOrder: (order: string) => void;
-}
+const OrderBottomSheet = forwardRef<BottomSheetModalMethods>(({}, ref) => {
+  const orderSnapPoints = useMemo(() => ["60%"], []);
+  const { setOrder, order } = usePokemon();
 
-const OrderBottomSheet = forwardRef<
-  BottomSheetModalMethods,
-  OrderBottomSheetProps
->(({ selectedOrder, setSelectedOrder }, ref) => {
-  const orderSnapPoints = useMemo(() => ["40%"], []);
-
-  const handleOrderSelection = (order: string) => {
-    setSelectedOrder(order);
+  const handleOrderSelection = (newOrder: Order) => {
+    setOrder(newOrder);
     (ref as React.RefObject<BottomSheetModalMethods>).current?.close();
   };
 
   // Renderização dos botões de ordenação
-  const renderOrderButton = ({ item }: { item: string }) => {
+  const renderOrderButton = ({ item }: { item: Order }) => {
     return (
       <Pressable
         style={[
           styles.orderButton,
-          selectedOrder === item && styles.orderButtonSelected,
+          order === item && styles.orderButtonSelected,
         ]}
         onPress={() => handleOrderSelection(item)}
       >
         <Text
           style={[
             styles.orderButtonText,
-            selectedOrder === item && styles.orderButtonTextSelected,
+            order === item && styles.orderButtonTextSelected,
           ]}
         >
           {item}
@@ -53,7 +48,7 @@ const OrderBottomSheet = forwardRef<
         <Text style={styles.bottomSheetTitle}>Selecione a ordem</Text>
       </View>
       <BottomSheetFlatList
-        data={["Menor número", "Maior número", "A-Z", "Z-A"]}
+        data={Object.values(Order)}
         keyExtractor={(item) => item}
         renderItem={renderOrderButton}
         contentContainerStyle={styles.bottomSheetContent}

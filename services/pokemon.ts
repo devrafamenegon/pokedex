@@ -1,4 +1,5 @@
 import { Pokemon, PokemonType } from "@/types/pokemon";
+import pLimit from "p-limit";
 
 const POKEMON_API_URL = process.env.EXPO_PUBLIC_POKEMON_API_URL;
 
@@ -98,24 +99,18 @@ const fetchPokemon = async (pokemon: any): Promise<Pokemon | null> => {
   }
 };
 
-export const fetchAllPokemons = async (
-  currentPage: number,
-  currentOrder: "asc" | "desc",
-  limit: number
-): Promise<Pokemon[]> => {
+export const fetchAllPokemons = async (limit: number): Promise<Pokemon[]> => {
   try {
-    const offset =
-      currentOrder === "asc"
-        ? currentPage * limit
-        : 10000 - (currentPage + 1) * limit;
-
-    const response = await fetch(
-      `${POKEMON_API_URL}/pokemon?limit=${limit}&offset=${offset}`
-    );
+    const response = await fetch(`${POKEMON_API_URL}/pokemon?limit=${limit}`);
     const data = await response.json();
 
+    // Limite de concorrência
+    const concurrentLimit = pLimit(200); // Limite de 10 requisições simultâneas
+
     const detailedPokemonList: Pokemon[] = await Promise.all(
-      data.results.map(fetchPokemon)
+      data.results.map((pokemon: any) =>
+        concurrentLimit(() => fetchPokemon(pokemon))
+      )
     );
 
     return detailedPokemonList.filter((pokemon) => pokemon !== null);
