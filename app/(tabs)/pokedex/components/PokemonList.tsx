@@ -15,7 +15,12 @@ const PokemonList: React.FC<PokemonListProps> = ({ isLoading, data }) => {
 
   const renderPokemonItem = useCallback(
     ({ item }: { item: Pokemon }) => (
-      <Pressable onPress={() => router.push(`/details/${item.id}`)}>
+      <Pressable
+        onPress={() => {
+          console.log(`/details/${item.id}`);
+          router.push(`/(tabs)/pokedex/details/${item.id}`);
+        }}
+      >
         <PokemonCard key={item.id} pokemon={item} />
       </Pressable>
     ),

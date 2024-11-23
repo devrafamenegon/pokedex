@@ -22,32 +22,36 @@ const RegisterScreen = () => {
   return (
     <HeaderView headerTitle="Criar conta">
       <View style={styles.contentContainer}>
-        <Image
-          source={require("@/assets/images/trainers/6.png")}
-          style={styles.image}
-        />
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>
-            Falta pouco para explorar esse mundo!
-          </Text>
-          <Text style={styles.subtitle}>Como deseja se conectar?</Text>
+        <View style={styles.headerContainer}>
+          <Image
+            source={require("@/assets/images/trainers/6.png")}
+            style={styles.image}
+          />
         </View>
-        <View style={styles.buttonContainer}>
-          <CTAIconButton
-            title="Continuar com a Apple"
-            logo="logo-apple"
-            onPress={handleRegisterWithApple}
-          />
-          <CTAIconButton
-            title="Continuar com o Google"
-            logo="logo-google"
-            onPress={handleRegisterWithGoogle}
-          />
-          <CTAButton
-            title="Continuar com um e-mail"
-            type="default"
-            onPress={handleRegisterWithEmail}
-          />
+        <View style={styles.footerContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>
+              Falta pouco para explorar esse mundo!
+            </Text>
+            <Text style={styles.subtitle}>Como deseja se conectar?</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <CTAIconButton
+              title="Continuar com a Apple"
+              logo="logo-apple"
+              onPress={handleRegisterWithApple}
+            />
+            <CTAIconButton
+              title="Continuar com o Google"
+              logo="logo-google"
+              onPress={handleRegisterWithGoogle}
+            />
+            <CTAButton
+              title="Continuar com um e-mail"
+              type="default"
+              onPress={handleRegisterWithEmail}
+            />
+          </View>
         </View>
       </View>
     </HeaderView>
@@ -57,10 +61,18 @@ const RegisterScreen = () => {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    justifyContent: "flex-end",
+  },
+  headerContainer: {
+    flex: 2 / 5,
+    paddingTop: 16,
   },
   image: {
+    maxHeight: "100%",
     alignSelf: "center",
+    resizeMode: "contain",
+  },
+  footerContainer: {
+    flex: 3 / 5,
   },
   textContainer: {
     display: "flex",
