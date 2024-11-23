@@ -6,7 +6,7 @@ const LoginSuccessScreen = () => {
   const router = useRouter();
 
   const handleContinue = () => {
-    router.push("/(home)");
+    router.push("/(tabs)/pokedex");
   };
 
   return (

@@ -16,7 +16,7 @@ const AuthScreen = () => {
   };
 
   const handleSkip = () => {
-    router.push("/(home)");
+    router.replace("/(tabs)/pokedex");
   };
 
   return (
