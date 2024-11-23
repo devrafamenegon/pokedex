@@ -22,7 +22,7 @@ const PokemonImage = ({ id, maxSize }: PokemonImageProps) => {
     <View>
       <Image
         source={{
-          uri: getShowdownPokemonImage(id.toString()),
+          uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id.toString()}.gif`,
         }}
         style={[
           styles.image,

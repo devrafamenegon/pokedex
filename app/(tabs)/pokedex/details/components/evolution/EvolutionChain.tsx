@@ -24,7 +24,9 @@ const EvolutionChain: React.FC<EvolutionChainProps> = ({ evolutions }) => {
               </Text>
             </View>
           )}
-          <Pressable onPress={() => router.push(`/details/${evo.id}`)}>
+          <Pressable
+            onPress={() => router.push(`/(tabs)/pokedex/details/${evo.id}`)}
+          >
             <EvolutionCard
               id={evo.id ?? 0}
               name={evo.name ?? "Não encontrado"}

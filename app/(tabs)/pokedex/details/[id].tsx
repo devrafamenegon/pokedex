@@ -2,7 +2,6 @@ import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import useFetchEvolutions from "@/hooks/useFetchEvolutions";
 import useFetchPokemonDetails from "@/hooks/useFetchPokemonDetails";
-import Header from "./components/Header";
 import PokemonDetails from "./components/PokemonDetails";
 import PokemonDamageClassifier from "./components/PokemonDamageClassifier";
 import PokemonInfoBadgeGrid from "./components/badge/PokemonInfoBadgeGrid";
@@ -10,6 +9,7 @@ import GenderBar from "./components/gender/GenderBar";
 import EvolutionChain from "./components/evolution/EvolutionChain";
 import PokemonImage from "../components/PokemonImage";
 import PokemonImageBackground from "./components/PokemonImageBackground";
+import Header from "./components/Header";
 
 const DetailsScreen = () => {
   const { dismiss } = useRouter();
