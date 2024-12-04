@@ -32,7 +32,6 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    console.log("trocou de ordem", order);
     let filteredList: Pokemon[] = filterPokemonList(
       allPokemonList,
       selectedType,
@@ -90,6 +89,7 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#fff",
     paddingTop: 56,
     paddingHorizontal: 16,
     flex: 1,
