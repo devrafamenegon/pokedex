@@ -7,12 +7,7 @@ import PokedexActiveIcon from "@/components/icon/tab/pokedex-active";
 import RegionsActiveIcon from "@/components/icon/tab/regions-active";
 import FavoritesActiveIcon from "@/components/icon/tab/favorites-active";
 import ProfileActiveIcon from "@/components/icon/tab/profile-active";
-import { Stack, Tabs } from "expo-router";
-import HomeScreen from "./pokedex";
-import RegionsScreen from "./regions";
-import FavoritesScreen from "./favorites";
-import ProfileScreen from "./profile";
-
+import { Tabs } from "expo-router";
 interface TabBarIconProps {
   focused: boolean;
   label: string;
@@ -48,6 +43,7 @@ function TabsScreen() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
+          paddingTop: 8,
           height: 72,
           backgroundColor: "#fff",
           borderColor: "#E6E6E6",

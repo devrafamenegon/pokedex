@@ -4,6 +4,8 @@ import { Pokemon } from "@/types/pokemon";
 import PokemonCard from "./PokemonCard";
 import { useRouter } from "expo-router";
 import React, { useCallback } from "react";
+import FavoriteCircleIcon from "@/components/icon/favorite-circle";
+import { useFavorites } from "@/contexts/favorites";
 
 interface PokemonListProps {
   isLoading: boolean;
@@ -12,27 +14,37 @@ interface PokemonListProps {
 
 const PokemonList: React.FC<PokemonListProps> = ({ isLoading, data }) => {
   const router = useRouter();
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const renderPokemonItem = useCallback(
     ({ item }: { item: Pokemon }) => (
       <Pressable
         onPress={() => {
-          console.log(`/details/${item.id}`);
           router.push(`/(tabs)/pokedex/details/${item.id}`);
         }}
       >
+        <Pressable
+          style={styles.favoriteContainer}
+          onPress={() => {
+            toggleFavorite(item);
+          }}
+        >
+          <FavoriteCircleIcon isFavorited={isFavorite(item.id)} />
+        </Pressable>
         <PokemonCard key={item.id} pokemon={item} />
       </Pressable>
     ),
-    [router]
+    [router, toggleFavorite]
   );
 
   const listFooterComponent = useCallback(() => {
     return (
       <FlatList
-        data={Array.from({ length: 10 })}
+        data={[]}
         renderItem={() => <PokemonCardSkeleton />}
-        keyExtractor={(_, index) => index.toString()}
+        keyExtractor={(item: Pokemon, index) =>
+          item?.id?.toString() || index.toString()
+        }
         showsVerticalScrollIndicator={false}
       />
     );
@@ -48,7 +60,7 @@ const PokemonList: React.FC<PokemonListProps> = ({ isLoading, data }) => {
       <FlatList
         data={data}
         renderItem={renderPokemonItem}
-        keyExtractor={(item: Pokemon) => item.id.toString()}
+        keyExtractor={(item: Pokemon) => item?.id?.toString()}
         showsVerticalScrollIndicator={false}
         initialNumToRender={20}
         maxToRenderPerBatch={20}
@@ -70,6 +82,12 @@ const styles = StyleSheet.create({
   loadingMoreContainer: {
     paddingVertical: 20,
     alignItems: "center",
+  },
+  favoriteContainer: {
+    position: "absolute",
+    right: 6,
+    top: 12,
+    zIndex: 10,
   },
 });
 
