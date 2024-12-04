@@ -3,6 +3,7 @@ import { Slot, SplashScreen } from "expo-router";
 import { useEffect } from "react";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { PokemonProvider } from "@/contexts/pokemon";
+import { FavoritesProvider } from "@/contexts/favorites";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -35,9 +36,11 @@ export default function RootLayout() {
   return (
     <ClerkProvider publishableKey={publishableKey}>
       <ClerkLoaded>
-        <PokemonProvider>
-          <Slot />
-        </PokemonProvider>
+        <FavoritesProvider>
+          <PokemonProvider>
+            <Slot />
+          </PokemonProvider>
+        </FavoritesProvider>
       </ClerkLoaded>
     </ClerkProvider>
   );
