@@ -10,11 +10,14 @@ import EvolutionChain from "./components/evolution/EvolutionChain";
 import PokemonImage from "../components/PokemonImage";
 import PokemonImageBackground from "./components/PokemonImageBackground";
 import Header from "./components/Header";
+import { useFavorites } from "@/contexts/favorites";
 
 const DetailsScreen = () => {
   const { dismiss } = useRouter();
   const { id } = useLocalSearchParams();
   const pokemonId = Array.isArray(id) ? Number(id[0]) : Number(id);
+
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const { evolutions, isLoadingEvolutions, error } =
     useFetchEvolutions(pokemonId);
@@ -23,13 +26,18 @@ const DetailsScreen = () => {
 
   const handleBack = () => dismiss();
   const handleFavorite = () => {
-    // TODO
+    if (!pokemon) return;
+    toggleFavorite(pokemon);
   };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.headerContainer}>
-        <Header onBack={handleBack} onFavorite={handleFavorite} />
+        <Header
+          onBack={handleBack}
+          onFavorite={handleFavorite}
+          isFavorite={isFavorite(pokemonId)}
+        />
       </View>
 
       <View style={styles.imageContainer}>

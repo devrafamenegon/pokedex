@@ -5,15 +5,19 @@ import FavoriteIcon from "@/components/icon/favorite";
 type HeaderProps = {
   onBack: () => void;
   onFavorite: () => void;
+  isFavorite: boolean;
 };
 
-const Header = ({ onBack, onFavorite }: HeaderProps) => (
+const Header = ({ onBack, onFavorite, isFavorite }: HeaderProps) => (
   <View style={styles.headerContainer}>
     <Pressable style={styles.backArrow} onPress={onBack}>
       <BackArrowIcon stroke={"#fff"} />
     </Pressable>
     <Pressable style={styles.favorite} onPress={onFavorite}>
-      <FavoriteIcon stroke={"#fff"} />
+      <FavoriteIcon
+        stroke={isFavorite ? "#ff5656" : "#fff"}
+        fill={isFavorite ? "#ff5656" : "transparent"}
+      />
     </Pressable>
   </View>
 );
